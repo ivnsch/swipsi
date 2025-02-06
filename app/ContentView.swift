@@ -11,16 +11,14 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
+    
+    @EnvironmentObject var api: Api
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+                ForEach(api.bikes) { item in
+                    Text(item.name)
                 }
                 .onDelete(perform: deleteItems)
             }
@@ -39,6 +37,10 @@ struct ContentView: View {
                     }
                 }
             }
+            .onAppear {
+                api.getBikes()
+            }
+            
         } detail: {
             Text("Select an item")
         }

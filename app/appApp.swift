@@ -10,6 +10,8 @@ import SwiftData
 
 @main
 struct appApp: App {
+    var api = Api()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -26,6 +28,7 @@ struct appApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(api)
         }
         .modelContainer(sharedModelContainer)
     }
