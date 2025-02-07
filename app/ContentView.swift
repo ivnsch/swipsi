@@ -16,12 +16,14 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(api.bikes) { item in
-                    Text(item.name)
-                }
-                .onDelete(perform: deleteItems)
-            }
+            
+            CardView()
+//            List {
+//                ForEach(api.bikes) { item in
+//                    Text(item.name)
+//                }
+//                .onDelete(perform: deleteItems)
+//            }
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
