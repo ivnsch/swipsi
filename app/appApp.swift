@@ -30,19 +30,19 @@ struct appApp: App {
             TabView {
                 ContentView()
                     .tabItem {
-                        Label("Match", systemImage: "tray.and.arrow.down.fill")
+                        Label("Search", systemImage: "magnifyingglass")
                     }
                 ContentView()
                     .tabItem {
-                        Label("Likes", systemImage: "tray.and.arrow.up.fill")
+                        Label("Likes", systemImage: "heart")
                     }
                 ContentView()
                     .tabItem {
-                        Label("Preferences", systemImage: "tray.and.arrow.up.fill")
+                        Label("Preferences", systemImage: "switch.2")
                     }
                 ContentView()
                     .tabItem {
-                        Label("More", systemImage: "tray.and.arrow.up.fill")
+                        Label("More", systemImage: "ellipsis")
                     }
             }
         }
