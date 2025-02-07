@@ -1,6 +1,6 @@
 import Foundation
 
-struct Bike: Identifiable {
+struct Bike: Identifiable, Hashable {
     let id: String
     let name: String
     var brand: String

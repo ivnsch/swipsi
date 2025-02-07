@@ -17,7 +17,7 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             
-//            CardView()
+            CardStackView()
             List {
                 ForEach(api.bikes) { item in
                     Text(item.name)
