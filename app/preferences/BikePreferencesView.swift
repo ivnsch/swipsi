@@ -47,11 +47,17 @@ struct BikePreferencesView: View {
         VStack {
             switch currentStep {
             case .type:
-                BikeTypeView(preferences: $preferences)
+                BikeTypeView(preferences: $preferences, onNext: {
+                    onNext()
+                })
             case .electric:
-                BikeElectricView(preferences: $preferences)
+                BikeElectricView(preferences: $preferences, onNext: {
+                    onNext()
+                })
             case .priceRange:
-                BikePriceRangeView(preferences: $preferences)
+                BikePriceRangeView(preferences: $preferences) {
+                    onSearch()
+                }
             }
             
             HStack {
@@ -60,34 +66,43 @@ struct BikePreferencesView: View {
                         currentStep = previousStep
                     }
                 }
-                
-                if let nextStep = currentStep.nextStep {
-                    Button("Next") {
-                        currentStep = nextStep
-                    }
-                }
             }
         }.navigationTitle(currentStep.title)
+    }
+    
+    func onNext() {
+        if let nextStep = currentStep.nextStep {
+            currentStep = nextStep
+        }
+    }
+    
+    func onSearch() {
+        // TODO send search to api, on response show search tab with updated results
     }
 }
 
 struct BikeTypeView: View {
     @Binding var preferences: BikePreferences
+    var onNext: () -> Void
 
     var body: some View {
         VStack {
             Text("Type")
             Button("Road") {
                 preferences.type = .road
+                onNext()
             }
             Button("Mountain") {
                 preferences.type = .mountain
+                onNext()
             }
             Button("Hybrid") {
                 preferences.type = .hybrid
+                onNext()
             }
             Button("Folding") {
                 preferences.type = .folding
+                onNext()
             }
         }
     }
@@ -95,15 +110,18 @@ struct BikeTypeView: View {
 
 struct BikeElectricView: View {
     @Binding var preferences: BikePreferences
+    var onNext: () -> Void
 
     var body: some View {
         VStack {
             Text("Electric?")
             Button("Yes") {
                 preferences.electric = true
+                onNext()
             }
             Button("No") {
                 preferences.electric = false
+                onNext()
             }
         }
     }
@@ -111,6 +129,7 @@ struct BikeElectricView: View {
 
 struct BikePriceRangeView: View {
     @Binding var preferences: BikePreferences
+    var onSearch: () -> Void
 
     var body: some View {
         VStack {
@@ -130,6 +149,10 @@ struct BikePriceRangeView: View {
             Button("< 2000") {
                 preferences.price_min = "2000"
                 preferences.price_max = "100000"
+            }
+            
+            Button("Search!") {
+                onSearch()
             }
         }
     }
