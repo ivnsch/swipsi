@@ -5,27 +5,25 @@ struct CardView: View {
     @State private var degrees: Double = 0
     @State private var currentImageIndex = 0
 
-    @State private var mockImages = [
-        "bike", "bike2"
-    ]
+    let model: CardModel
     
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                Image(mockImages[currentImageIndex])
+                Image(bike.imageUrls[currentImageIndex])
                     .resizable()
                     .scaledToFill()
                     // for some reason differently to video it's needed to leave frame here too
                     // otherwise the info view doesn't show
                     .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
                     .overlay {
-                        ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: mockImages.count)
+                        ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
                     }
-                CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: mockImages.count)
+                CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
                 SwipeActionIndicatorView(xOffset: $xOffset)
                 
             }
-            BikeInfoView()
+            BikeInfoView(bike: bike)
         }
         .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
         .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -41,6 +39,15 @@ struct CardView: View {
     
 }
 
+private extension CardView {
+    var bike: Bike {
+        return model.bike
+    }
+    
+    var imageCount: Int {
+        return bike.imageUrls.count
+    }
+}
 private extension CardView {
     func returnToCenter() {
         xOffset = 0
@@ -84,5 +91,5 @@ private extension CardView {
 }
 
 #Preview {
-    CardView()
+    CardView(model: CardModel(bike: MockData.bikes[0]))
 }

@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct BikeInfoView: View {
+    let bike: Bike
 
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Text("Bike 123")
+                Text(bike.name)
                     .font(.title)
                     .fontWeight(.heavy)
                 
-                Text("Brand 123")
+                Text(bike.brand)
                     .font(.title)
                     .fontWeight(.semibold)
                 
@@ -45,5 +46,5 @@ struct BikeInfoView: View {
 }
 
 #Preview {
-    BikeInfoView()
+    BikeInfoView(bike: MockData.bikes[0])
 }

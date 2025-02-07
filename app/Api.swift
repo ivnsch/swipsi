@@ -1,6 +1,6 @@
 import Foundation
 
-struct Bike: Identifiable, Decodable {
+struct ApiBike: Identifiable, Decodable {
     var id: String
     var name: String
     var brand: String
@@ -9,7 +9,7 @@ struct Bike: Identifiable, Decodable {
 }
 
 class Api: ObservableObject {
-    @Published var bikes: [Bike] = []
+    @Published var bikes: [ApiBike] = []
 
     func getBikes() {
         let url = URL(string: "http://127.0.0.1:8080/bikes")!
@@ -28,7 +28,7 @@ class Api: ObservableObject {
                 guard let data = data else { return }
                 DispatchQueue.main.async {
                     do {
-                        let decodedBikes = try JSONDecoder().decode([Bike].self, from: data)
+                        let decodedBikes = try JSONDecoder().decode([ApiBike].self, from: data)
                         self.bikes = decodedBikes
                     } catch let error {
                         print("Error decoding: ", error)
