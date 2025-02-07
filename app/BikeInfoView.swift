@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BikeInfoView: View {
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -38,7 +39,8 @@ struct BikeInfoView: View {
         .background(
             LinearGradient(colors: [.clear, .black.opacity(0.1)], startPoint: .top, endPoint: .bottom)
         )
-        .foregroundStyle(.red)
+        .foregroundStyle(.white)
+
     }
 }
 
