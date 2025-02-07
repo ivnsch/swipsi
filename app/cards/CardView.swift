@@ -12,15 +12,24 @@ struct CardView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                Image(bike.pictures[currentImageIndex])
-                    .resizable()
-                    .scaledToFill()
-                    // for some reason differently to video it's needed to leave frame here too
-                    // otherwise the info view doesn't show
-                    .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
-                    .overlay {
-                        ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
+                AsyncImage(url: URL(string: bike.pictures[currentImageIndex])) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            // for some reason differently to video it's needed to leave frame here too
+                            // otherwise the info view doesn't show
+                            .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
+                            .clipped()
+                    } else if phase.error != nil {
+                        Color.red
+                    } else {
+                        ProgressView()
                     }
+                }
+                .overlay {
+                    ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
+                }
                 CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
                 SwipeActionIndicatorView(xOffset: $xOffset)
                 
