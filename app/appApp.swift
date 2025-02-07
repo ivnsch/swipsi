@@ -27,8 +27,24 @@ struct appApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(api)
+            TabView {
+                ContentView()
+                    .tabItem {
+                        Label("Match", systemImage: "tray.and.arrow.down.fill")
+                    }
+                ContentView()
+                    .tabItem {
+                        Label("Likes", systemImage: "tray.and.arrow.up.fill")
+                    }
+                ContentView()
+                    .tabItem {
+                        Label("Preferences", systemImage: "tray.and.arrow.up.fill")
+                    }
+                ContentView()
+                    .tabItem {
+                        Label("More", systemImage: "tray.and.arrow.up.fill")
+                    }
+            }
         }
         .modelContainer(sharedModelContainer)
     }
