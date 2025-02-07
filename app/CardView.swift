@@ -21,7 +21,9 @@ struct CardView: View {
                     .overlay {
                         ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: mockImages.count)
                     }
+                CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: mockImages.count)
                 SwipeActionIndicatorView(xOffset: $xOffset)
+                
             }
             BikeInfoView()
         }
