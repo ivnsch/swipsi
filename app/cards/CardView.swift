@@ -7,12 +7,12 @@ struct CardView: View {
     @State private var degrees: Double = 0
     @State private var currentImageIndex = 0
 
-    let model: CardModel
+    let bike: Bike
     
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                Image(bike.imageUrls[currentImageIndex])
+                Image(bike.pictures[currentImageIndex])
                     .resizable()
                     .scaledToFill()
                     // for some reason differently to video it's needed to leave frame here too
@@ -42,12 +42,8 @@ struct CardView: View {
 }
 
 private extension CardView {
-    var bike: Bike {
-        return model.bike
-    }
-    
     var imageCount: Int {
-        return bike.imageUrls.count
+        return bike.pictures.count
     }
 }
 private extension CardView {
@@ -61,7 +57,7 @@ private extension CardView {
             xOffset = 500
             degrees = 12
         } completion: {
-            viewModel.removeCard(model)
+            viewModel.removeCard(bike)
         }
     }
     
@@ -70,7 +66,7 @@ private extension CardView {
             xOffset = -500
             degrees = -12
         } completion: {
-            viewModel.removeCard(model)
+            viewModel.removeCard(bike)
         }
     }
 }
@@ -100,8 +96,3 @@ private extension CardView {
 
 }
 
-#Preview {
-    CardView(
-        viewModel: CardsViewModel(service: CardService()),
-        model: CardModel(bike: MockData.bikes[0]))
-}

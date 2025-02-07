@@ -1,42 +1,30 @@
 import Foundation
 
-struct ApiBike: Identifiable, Decodable {
+struct Bike: Identifiable, Decodable, Hashable {
     var id: String
     var name: String
     var brand: String
     var price: String
-    var picture: String
+    var pictures: [String]
 }
 
 class Api: ObservableObject {
-    @Published var bikes: [ApiBike] = []
-
-    func getBikes() {
+    func getBikes() async throws -> [Bike] {
         let url = URL(string: "http://127.0.0.1:8080/bikes")!
-
         let urlRequest = URLRequest(url: url)
 
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-            if let error = error {
-                print("Request error: ", error)
-                return
-            }
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
-            guard let response = response as? HTTPURLResponse else { return }
-
-            if response.statusCode == 200 {
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    do {
-                        let decodedBikes = try JSONDecoder().decode([ApiBike].self, from: data)
-                        self.bikes = decodedBikes
-                    } catch let error {
-                        print("Error decoding: ", error)
-                    }
-                }
-            }
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
         }
 
-        dataTask.resume()
+        do {
+            let decodedBikes = try JSONDecoder().decode([Bike].self, from: data)
+            return decodedBikes
+        } catch {
+            print("Error decoding:", error)
+            throw error
+        }
     }
 }

@@ -18,12 +18,6 @@ struct ContentView: View {
         NavigationSplitView {
             
             CardStackView()
-            List {
-                ForEach(api.bikes) { item in
-                    Text(item.name)
-                }
-                .onDelete(perform: deleteItems)
-            }
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
@@ -39,10 +33,6 @@ struct ContentView: View {
                     }
                 }
             }
-            .onAppear {
-                api.getBikes()
-            }
-            
         } detail: {
             Text("Select an item")
         }

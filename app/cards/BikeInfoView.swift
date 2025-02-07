@@ -44,7 +44,3 @@ struct BikeInfoView: View {
 
     }
 }
-
-#Preview {
-    BikeInfoView(bike: MockData.bikes[0])
-}

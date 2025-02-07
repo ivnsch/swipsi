@@ -9,24 +9,24 @@ import Foundation
 
 @MainActor
 class CardsViewModel: ObservableObject {
-    @Published var cardModels: [CardModel] = []
+    @Published var cardModels: [Bike] = []
     
-    private let service: CardService
+    private let api: Api
     
-    init(service: CardService) {
-        self.service = service
+    init(api: Api) {
+        self.api = api
         Task { await fetchCardModels() }
     }
     
     func fetchCardModels() async {
         do {
-            self.cardModels = try await service.fetchCardModels()
+            self.cardModels = try await api.getBikes()
         } catch {
             print("Failed to fetch cards with error: \(error)")
         }
     }
     
-    func removeCard(_ card: CardModel) {
+    func removeCard(_ card: Bike) {
         guard let index = cardModels.firstIndex(where: { $0.id == card.id }) else { return }
         cardModels.remove(at: index)
     }
