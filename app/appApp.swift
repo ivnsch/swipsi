@@ -36,7 +36,7 @@ struct appApp: App {
                     .tabItem {
                         Label("Likes", systemImage: "heart")
                     }
-                ContentView()
+                BikePreferencesView()
                     .tabItem {
                         Label("Preferences", systemImage: "switch.2")
                     }
