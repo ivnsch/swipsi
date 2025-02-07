@@ -3,16 +3,24 @@ import SwiftUI
 struct CardView: View {
     @State private var xOffset: CGFloat = 0
     @State private var degrees: Double = 0
+    @State private var currentImageIndex = 0
 
+    @State private var mockImages = [
+        "bike", "bike2"
+    ]
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                Image(.bike)
+                Image(mockImages[currentImageIndex])
                     .resizable()
                     .scaledToFill()
                     // for some reason differently to video it's needed to leave frame here too
                     // otherwise the info view doesn't show
                     .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
+                    .overlay {
+                        ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: mockImages.count)
+                    }
                 SwipeActionIndicatorView(xOffset: $xOffset)
             }
             BikeInfoView()
