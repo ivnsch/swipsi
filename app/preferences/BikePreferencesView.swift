@@ -95,24 +95,36 @@ struct BikeTypeView: View {
 
     var body: some View {
         VStack {
-            Text("Type")
-            Button("Road") {
+            Button("Road")
+            {
                 preferences.type = .road
 //                onNext()
             }
+            .preferenceButton()
             Button("Mountain") {
                 preferences.type = .mountain
 //                onNext()
             }
+            .preferenceButton()
             Button("Hybrid") {
                 preferences.type = .hybrid
 //                onNext()
             }
+            .preferenceButton()
             Button("Folding") {
                 preferences.type = .folding
 //                onNext()
             }
+            .preferenceButton()
         }
+    }
+}
+
+extension Button {
+    func preferenceButton() -> some View {
+        foregroundColor(Color.gray)
+            .font(.system(size: 30))
+            .padding(.bottom, 10)
     }
 }
 
@@ -122,15 +134,16 @@ struct BikeElectricView: View {
 
     var body: some View {
         VStack {
-            Text("Electric?")
             Button("Yes") {
                 preferences.electric = true
 //                onNext()
             }
+            .preferenceButton()
             Button("No") {
                 preferences.electric = false
 //                onNext()
             }
+            .preferenceButton()
         }
     }
 }
@@ -146,19 +159,22 @@ struct BikePriceRangeView: View {
                 preferences.price_min = "0"
                 preferences.price_max = "499"
             }
+            .preferenceButton()
             Button("500 - 1000") {
                 preferences.price_min = "500"
                 preferences.price_max = "1000"
             }
+            .preferenceButton()
             Button("1000 - 2000") {
                 preferences.price_min = "1000"
                 preferences.price_max = "2000"
             }
+            .preferenceButton()
             Button("< 2000") {
                 preferences.price_min = "2000"
                 preferences.price_max = "100000"
             }
-            
+            .preferenceButton()
             Button("Search!") {
                 onSearch()
             }
