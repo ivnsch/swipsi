@@ -44,30 +44,33 @@ struct BikePreferencesView: View {
     @State private var currentStep: BikePreferenceStep = .type
     
     var body: some View {
-        VStack {
-            switch currentStep {
-            case .type:
-                BikeTypeView(preferences: $preferences, onNext: {
-                    onNext()
-                })
-            case .electric:
-                BikeElectricView(preferences: $preferences, onNext: {
-                    onNext()
-                })
-            case .priceRange:
-                BikePriceRangeView(preferences: $preferences) {
-                    onSearch()
+        NavigationStack {
+            VStack {
+                switch currentStep {
+                case .type:
+                    BikeTypeView(preferences: $preferences, onNext: {
+                        onNext()
+                    })
+                case .electric:
+                    BikeElectricView(preferences: $preferences, onNext: {
+                        onNext()
+                    })
+                case .priceRange:
+                    BikePriceRangeView(preferences: $preferences) {
+                        onSearch()
+                    }
                 }
-            }
-            
-            HStack {
-                if let previousStep = currentStep.previousStep {
-                    Button("Previous") {
-                        currentStep = previousStep
+                
+                HStack {
+                    if let previousStep = currentStep.previousStep {
+                        Button("Previous") {
+                            currentStep = previousStep
+                        }
                     }
                 }
             }
-        }.navigationTitle(currentStep.title)
+            .navigationTitle(currentStep.title)
+        }
     }
     
     func onNext() {
