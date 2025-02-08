@@ -66,7 +66,7 @@ private extension CardView {
             xOffset = 500
             degrees = 12
         } completion: {
-            viewModel.removeCard(bike)
+            viewModel.like(bike)
         }
     }
     
@@ -75,7 +75,7 @@ private extension CardView {
             xOffset = -500
             degrees = -12
         } completion: {
-            viewModel.removeCard(bike)
+            viewModel.dislike(bike)
         }
     }
 }
