@@ -1,14 +1,19 @@
 import SwiftUI
 
 struct BikePreferences {
-    var type: BikeType = .road
+    var mountain: Bool = false
+    var road: Bool = false
+    var hybrid: Bool = false
     var electric: Bool = false
-    var price_min: String = "0"
-    var price_max: String = "100000"
+    var price_1: Bool = false
+    var price_2: Bool = false
+    var price_3: Bool = false
+    var price_4: Bool = false
 }
 
+
 enum BikeType {
-    case road, mountain, hybrid, folding
+    case road, mountain, hybrid
 }
 
 enum BikePreferenceStep {
@@ -97,32 +102,27 @@ struct BikeTypeView: View {
         VStack {
             Button("Road")
             {
-                preferences.type = .road
+                preferences.road = !preferences.road
 //                onNext()
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.road)
             Button("Mountain") {
-                preferences.type = .mountain
+                preferences.mountain = !preferences.mountain
 //                onNext()
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.mountain)
             Button("Hybrid") {
-                preferences.type = .hybrid
+                preferences.hybrid = !preferences.hybrid
 //                onNext()
             }
-            .preferenceButton()
-            Button("Folding") {
-                preferences.type = .folding
-//                onNext()
-            }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.hybrid)
         }
     }
 }
 
 extension Button {
-    func preferenceButton() -> some View {
-        foregroundColor(Color.gray)
+    func preferenceButton(selected: Bool) -> some View {
+        foregroundColor(selected ? Color.black : Color.gray)
             .font(.system(size: 30))
             .padding(.bottom, 10)
     }
@@ -138,12 +138,12 @@ struct BikeElectricView: View {
                 preferences.electric = true
 //                onNext()
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.electric)
             Button("No") {
                 preferences.electric = false
 //                onNext()
             }
-            .preferenceButton()
+            .preferenceButton(selected: !preferences.electric)
         }
     }
 }
@@ -155,25 +155,21 @@ struct BikePriceRangeView: View {
     var body: some View {
         VStack {
             Button("€") {
-                preferences.price_min = "0"
-                preferences.price_max = "499"
+                preferences.price_1 = !preferences.price_1
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.price_1)
             Button("€€") {
-                preferences.price_min = "500"
-                preferences.price_max = "1000"
+                preferences.price_2 = !preferences.price_2
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.price_2)
             Button("€€€") {
-                preferences.price_min = "1000"
-                preferences.price_max = "2000"
+                preferences.price_3 = !preferences.price_3
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.price_3)
             Button("€€€€") {
-                preferences.price_min = "2000"
-                preferences.price_max = "100000"
+                preferences.price_4 = !preferences.price_4
             }
-            .preferenceButton()
+            .preferenceButton(selected: preferences.price_4)
             Button("Search!") {
                 onSearch()
             }
