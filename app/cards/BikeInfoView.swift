@@ -17,9 +17,13 @@ struct BikeInfoView: View {
                     .font(.title)
                     .fontWeight(.heavy)
                 
-                Text(bike.brand)
-                    .font(.title)
-                    .fontWeight(.semibold)
+                VStack {
+                    Text(bike.brand)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                    Text(bike.type)
+                    Text(bike.electric ? "Electric" : "Non-Electric")
+                }
                 
                 Spacer()
                 

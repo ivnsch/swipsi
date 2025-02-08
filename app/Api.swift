@@ -7,6 +7,8 @@ struct Bike: Identifiable, Decodable, Hashable {
     var price: String
     var pictures: [String]
     var vendorLink: String
+    var type: String
+    var electric: Bool
 }
 
 class Api: ObservableObject {

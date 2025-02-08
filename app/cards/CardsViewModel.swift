@@ -72,7 +72,9 @@ class CardsViewModel: ObservableObject {
             price: bike.price,
             pictures: bike.pictures,
             likedDate: Date(),
-            vendorLink: bike.vendorLink
+            vendorLink: bike.vendorLink,
+            type: bike.type,
+            electric: bike.electric
         )
         modelContext.insert(like)
     }

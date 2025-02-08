@@ -32,6 +32,8 @@ struct LikedBikesView: View {
                                     Text(bike.name)
                                     Text(bike.brand)
                                     Text(bike.price)
+                                    Text(bike.type)
+                                    Text(bike.electric ? "Electric" : "Non-Electric")
                                 }
                                 
                             }

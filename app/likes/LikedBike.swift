@@ -10,8 +10,10 @@ final class LikedBike: Identifiable, Hashable {
     var pictures: [String] = []
     var likedDate: Date = Date()
     var vendorLink: String = ""
+    var type: String = ""
+    var electric: Bool = false
     
-    init(id: String, name: String, brand: String, price: String, pictures: [String], likedDate: Date, vendorLink: String) {
+    init(id: String, name: String, brand: String, price: String, pictures: [String], likedDate: Date, vendorLink: String, type: String, electric: Bool) {
         self.id = id
         self.name = name
         self.brand = brand
@@ -19,5 +21,7 @@ final class LikedBike: Identifiable, Hashable {
         self.pictures = pictures
         self.likedDate = likedDate
         self.vendorLink = vendorLink
+        self.type = type
+        self.electric = electric
     }
 }
