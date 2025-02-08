@@ -67,6 +67,11 @@ struct BikePreferencesView: View {
                             currentStep = previousStep
                         }
                     }
+                    if let nextStep = currentStep.nextStep {
+                        Button("Next") {
+                            currentStep = nextStep
+                        }
+                    }
                 }
             }
             .navigationTitle(currentStep.title)
@@ -93,19 +98,19 @@ struct BikeTypeView: View {
             Text("Type")
             Button("Road") {
                 preferences.type = .road
-                onNext()
+//                onNext()
             }
             Button("Mountain") {
                 preferences.type = .mountain
-                onNext()
+//                onNext()
             }
             Button("Hybrid") {
                 preferences.type = .hybrid
-                onNext()
+//                onNext()
             }
             Button("Folding") {
                 preferences.type = .folding
-                onNext()
+//                onNext()
             }
         }
     }
@@ -120,11 +125,11 @@ struct BikeElectricView: View {
             Text("Electric?")
             Button("Yes") {
                 preferences.electric = true
-                onNext()
+//                onNext()
             }
             Button("No") {
                 preferences.electric = false
-                onNext()
+//                onNext()
             }
         }
     }
