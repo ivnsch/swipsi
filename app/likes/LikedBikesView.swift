@@ -6,36 +6,43 @@ struct LikedBikesView: View {
     private var bikes: [LikedBike]
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(bikes) { bike in
-                    HStack {
-                        // TODO handle no pic
-                        AsyncImage(url: URL(string: bike.pictures[0])) { phase in
-                            if let image = phase.image {
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 100, height: 100)
-                                    .clipped()
-                            } else if phase.error != nil {
-                                Color.red
-                            } else {
-                                ProgressView()
+            NavigationSplitView {
+                List {
+                    ForEach(bikes) { bike in
+                        NavigationLink {
+                            LikedBikeDetailsView(bike: bike)
+                        } label: {
+                            HStack {
+                                // TODO handle no pic
+                                AsyncImage(url: URL(string: bike.pictures[0])) { phase in
+                                    if let image = phase.image {
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 100, height: 100)
+                                            .clipped()
+                                    } else if phase.error != nil {
+                                        Color.red
+                                    } else {
+                                        ProgressView()
+                                    }
+                                }
+                                
+                                VStack(alignment: .leading) {
+                                    Text(bike.name)
+                                    Text(bike.brand)
+                                    Text(bike.price)
+                                }
+                                
                             }
                         }
-                        
-                        VStack(alignment: .leading) {
-                            Text(bike.name)
-                            Text(bike.brand)
-                            Text(bike.price)
-                        }
-                        
                     }
                 }
+                .navigationTitle("Likes")
+            } detail: {
+                Text("Select a Landmark")
             }
-            .navigationTitle("Likes")
-        }
+            
     }
 }
 
