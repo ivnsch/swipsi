@@ -42,8 +42,14 @@ struct LikedBikeDetailsView: View {
             .navigationTitle(bike.name)
             .frame(width: UIScreen.main.bounds.width, height: SizeConstants.cardHeight)
         }
-        Button("Go to vendor") {
-            print("TODO link")
-        }
+        link(bike: bike)
+    }
+}
+
+func link(bike: LikedBike) -> some View {
+    if let url = URL(string: bike.vendorLink) {
+        return AnyView(Link("Go to vendor", destination: url))
+    } else {
+        return AnyView(Text("A problem occurred linking to vendor"))
     }
 }

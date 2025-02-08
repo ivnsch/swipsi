@@ -9,13 +9,15 @@ final class LikedBike: Identifiable, Hashable {
     var price: String = ""
     var pictures: [String] = []
     var likedDate: Date = Date()
+    var vendorLink: String = ""
     
-    init(id: String, name: String, brand: String, price: String, pictures: [String], likedDate: Date) {
+    init(id: String, name: String, brand: String, price: String, pictures: [String], likedDate: Date, vendorLink: String) {
         self.id = id
         self.name = name
         self.brand = brand
         self.price = price
         self.pictures = pictures
         self.likedDate = likedDate
+        self.vendorLink = vendorLink
     }
 }
