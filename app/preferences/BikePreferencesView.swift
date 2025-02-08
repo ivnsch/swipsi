@@ -153,7 +153,7 @@ struct BikePriceRangeView: View {
     var onSearch: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
             Button("€") {
                 preferences.price_min = "0"
                 preferences.price_max = "499"
