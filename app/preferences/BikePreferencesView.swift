@@ -5,6 +5,7 @@ struct BikePreferences {
     var road: Bool = false
     var hybrid: Bool = false
     var electric: Bool = false
+    var nonElectric: Bool = false
     var price_1: Bool = false
     var price_2: Bool = false
     var price_3: Bool = false
@@ -22,7 +23,7 @@ enum BikePreferenceStep {
     var title: String {
         switch self {
             case .type: return "Type"
-            case .electric: return "Electric"
+            case .electric: return "Electric?"
             case .priceRange: return "Price Range"
         }
     }
@@ -128,13 +129,20 @@ struct BikeElectricView: View {
     var body: some View {
         VStack {
             Button("Yes") {
-                preferences.electric = true
+                preferences.electric = !preferences.electric
+                preferences.nonElectric = !preferences.electric
             }
             .preferenceButton(selected: preferences.electric)
             Button("No") {
-                preferences.electric = false
+                preferences.nonElectric = !preferences.nonElectric
+                preferences.electric = !preferences.nonElectric
             }
-            .preferenceButton(selected: !preferences.electric)
+            .preferenceButton(selected: preferences.nonElectric)
+            Button("Both") {
+                preferences.electric = true
+                preferences.nonElectric = true
+            }
+            .preferenceButton(selected: preferences.electric && preferences.nonElectric)
         }
     }
 }
