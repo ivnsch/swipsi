@@ -34,7 +34,7 @@ struct BikeInfoView: View {
                     .padding(4)
                     .borderedBg()
             }
-            Text("Mountain bike")
+            Text(bike.descr)
                 .font(.subheadline)
                 .lineLimit(2)
         }
@@ -54,4 +54,5 @@ struct BikeInfos {
     var price: String
     var type: String
     var electric: Bool
+    var descr: String
 }

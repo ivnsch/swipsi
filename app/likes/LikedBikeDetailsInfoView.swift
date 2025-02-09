@@ -26,7 +26,7 @@ struct LikedBikeDetailsInfoView: View {
                     .padding(4)
                     .borderedBg(color: .black)
             }
-            Text("Mountain bike")
+            Text(bike.descr)
                 .font(.subheadline)
                 .lineLimit(2)
         }
