@@ -4,6 +4,8 @@ import SwiftData
 struct LikedBikesView: View {
     @Query(sort: [SortDescriptor(\LikedBike.likedDate, order: .forward)])
     private var bikes: [LikedBike]
+    
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
             NavigationSplitView {
@@ -39,12 +41,26 @@ struct LikedBikesView: View {
                             }
                         }
                     }
+                    .onDelete(perform: deleteItems)
                 }
                 .navigationTitle("Favs")
             } detail: {
                 Text("Select a Landmark")
             }
             
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                modelContext.delete(bikes[index])
+            }
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving: \(error)")
+            }
+        }
     }
 }
 
