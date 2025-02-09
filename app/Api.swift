@@ -15,7 +15,8 @@ struct Bike: Identifiable, Decodable, Hashable {
 
 class Api: ObservableObject {
     func getBikes() async throws -> [Bike] {
-        let url = URL(string: "http://127.0.0.1:8080/bikes")!
+//        let url = URL(string: "http://127.0.0.1:8080/bikes")!
+        let url = URL(string: "http://192.168.178.24:8080/bikes")!
         let urlRequest = URLRequest(url: url)
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
