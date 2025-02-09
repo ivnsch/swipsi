@@ -53,13 +53,9 @@ struct BikePreferencesView: View {
             VStack {
                 switch currentStep {
                 case .type:
-                    BikeTypeView(preferences: $preferences, onNext: {
-                        onNext()
-                    })
+                    BikeTypeView(preferences: $preferences)
                 case .electric:
-                    BikeElectricView(preferences: $preferences, onNext: {
-                        onNext()
-                    })
+                    BikeElectricView(preferences: $preferences)
                 case .priceRange:
                     BikePriceRangeView(preferences: $preferences) {
                         onSearch()
@@ -96,24 +92,20 @@ struct BikePreferencesView: View {
 
 struct BikeTypeView: View {
     @Binding var preferences: BikePreferences
-    var onNext: () -> Void
 
     var body: some View {
         VStack {
             Button("Road")
             {
                 preferences.road = !preferences.road
-//                onNext()
             }
             .preferenceButton(selected: preferences.road)
             Button("Mountain") {
                 preferences.mountain = !preferences.mountain
-//                onNext()
             }
             .preferenceButton(selected: preferences.mountain)
             Button("Hybrid") {
                 preferences.hybrid = !preferences.hybrid
-//                onNext()
             }
             .preferenceButton(selected: preferences.hybrid)
         }
@@ -130,18 +122,15 @@ extension Button {
 
 struct BikeElectricView: View {
     @Binding var preferences: BikePreferences
-    var onNext: () -> Void
 
     var body: some View {
         VStack {
             Button("Yes") {
                 preferences.electric = true
-//                onNext()
             }
             .preferenceButton(selected: preferences.electric)
             Button("No") {
                 preferences.electric = false
-//                onNext()
             }
             .preferenceButton(selected: !preferences.electric)
         }
