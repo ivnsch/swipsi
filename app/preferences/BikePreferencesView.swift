@@ -1,6 +1,7 @@
 import SwiftUI
+import SwiftData
 
-struct BikePreferences {
+struct BikePreferences: Codable {
     var mountain: Bool = false
     var road: Bool = false
     var hybrid: Bool = false
@@ -52,6 +53,8 @@ struct BikePreferencesView: View {
     @State private var preferences = BikePreferences()
     @State private var currentStep: BikePreferenceStep = .type
     
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -93,7 +96,13 @@ struct BikePreferencesView: View {
     }
     
     func onSearch() {
-        // TODO send search to api, on response show search tab with updated results
+        do {
+            try Prefs.saveBikePrefs(preferences)
+            // TODO select first tab
+        } catch {
+            // TODO error handling
+            print("couldn't save")
+        }
     }
 }
 
