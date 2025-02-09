@@ -63,16 +63,16 @@ struct BikePreferencesView: View {
                 
                 HStack {
                     if let previousStep = currentStep.previousStep {
-                        Button("Previous") {
+                        BorderedButton("Previous") {
                             currentStep = previousStep
                         }
                     }
                     if let nextStep = currentStep.nextStep {
-                        Button("Next") {
+                        BorderedButton("Next") {
                             currentStep = nextStep
                         }
                     } else {
-                        Button("Search") {
+                        BorderedButton("Search") {
                             onSearch()
                         }
                     }
@@ -90,6 +90,34 @@ struct BikePreferencesView: View {
     
     func onSearch() {
         // TODO send search to api, on response show search tab with updated results
+    }
+}
+
+struct BorderedButton: View {
+    let label: String
+    let action: () -> Void
+    
+    init(_ label: String, action: @escaping () -> Void) {
+        self.label = label
+        self.action = action
+    }
+    
+    var body: some View {
+        Button {
+            action()
+        } label: {
+            Text(label)
+                .padding(10)
+                .foregroundColor(.blue)
+                .background(
+                    RoundedRectangle(
+                        cornerRadius: 10,
+                        style: .continuous
+                    )
+                    .stroke(.blue, lineWidth: 2)
+
+                )
+        }
     }
 }
 
