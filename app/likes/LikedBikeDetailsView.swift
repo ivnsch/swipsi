@@ -39,8 +39,8 @@ struct LikedBikeDetailsView: View {
             .frame(width: UIScreen.main.bounds.width, height: SizeConstants.cardHeight)
             LikedBikeDetailsInfoView(bike: BikeInfos(name: bike.name, brand: bike.brand, price: bike.price, type: bike.type, electric: bike.electric, descr: bike.descr))
             .navigationTitle(bike.name)
+            link(bike: bike)
         }
-        link(bike: bike)
     }
 }
 
