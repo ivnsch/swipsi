@@ -19,15 +19,6 @@ struct LikedBikeDetailsInfoView: View {
                 }
                 
                 Spacer()
-                
-                Button {
-                    print("debug: show profile")
-                    
-                } label: {
-                    Image(systemName: "arrow.up.circle")
-                        .fontWeight(.bold)
-                        .imageScale(.large)
-                }
             }
             Text("Mountain bike")
                 .font(.subheadline)
