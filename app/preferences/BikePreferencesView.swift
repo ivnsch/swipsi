@@ -12,19 +12,19 @@ struct BikePreferences {
     var price_4: Bool = false
 }
 
-
 enum BikeType {
     case road, mountain, hybrid
 }
 
 enum BikePreferenceStep {
-    case type, electric, priceRange
+    case type, electric, priceRange, summary
     
     var title: String {
         switch self {
             case .type: return "Type"
             case .electric: return "Electric?"
             case .priceRange: return "Price Range"
+            case .summary: return "Summary"
         }
     }
     
@@ -33,6 +33,7 @@ enum BikePreferenceStep {
         case .type: return nil
         case .electric: return .type
         case .priceRange: return .electric
+        case .summary: return .priceRange
         }
     }
     
@@ -40,7 +41,9 @@ enum BikePreferenceStep {
         switch self {
         case .type: return .electric
         case .electric: return .priceRange
-        case .priceRange: return nil
+        case .priceRange: return .summary
+        case .summary: return nil
+
         }
     }
 }
@@ -59,8 +62,9 @@ struct BikePreferencesView: View {
                     BikeElectricView(preferences: $preferences)
                 case .priceRange:
                     BikePriceRangeView(preferences: $preferences)
+                case .summary:
+                    BikePreferencesSummaryView(preferences: preferences)
                 }
-                
                 HStack {
                     if let previousStep = currentStep.previousStep {
                         BorderedButton("Previous") {
@@ -90,6 +94,53 @@ struct BikePreferencesView: View {
     
     func onSearch() {
         // TODO send search to api, on response show search tab with updated results
+    }
+}
+
+struct BikePreferencesSummaryView: View {
+    @State var preferences: BikePreferences
+
+    var body: some View {
+        VStack {
+            Text("Type:")
+            VStack {
+                if preferences.mountain {
+                    Text("Mountain")
+                }
+                if preferences.road {
+                    Text("Road")
+                }
+                if preferences.hybrid {
+                    Text("Hybrid")
+                }
+            }
+            
+            Text("Electric:")
+            VStack {
+                if preferences.electric {
+                    Text("Electric")
+                }
+                if preferences.nonElectric {
+                    Text("Non-Electric")
+                }
+            }
+            
+            Text("Price:")
+            VStack {
+                if preferences.price_1 {
+                    Text("€")
+                }
+                if preferences.price_2 {
+                    Text("€€")
+                }
+                if preferences.price_3 {
+                    Text("€€€")
+                }
+                if preferences.price_4 {
+                    Text("€€€€")
+                }
+            }
+        }
     }
 }
 
