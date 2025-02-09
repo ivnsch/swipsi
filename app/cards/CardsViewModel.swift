@@ -21,7 +21,7 @@ class CardsViewModel: ObservableObject {
         self.api = api
     }
     
-    func fetchCardModels() {
+    func startFetchCardModels() {
         Task { await fetchCardModels() }
     }
     
@@ -31,11 +31,37 @@ class CardsViewModel: ObservableObject {
     
     func fetchCardModels() async {
         do {
-            self.cardModels = try await api.getBikes()
+            let bikes = try await api.getBikes()
+            let prefs = try Prefs.loadBikePrefs()
+            self.cardModels = filterBikes(bikes, prefs: prefs)
         } catch {
             print("Failed to fetch cards with error: \(error)")
         }
     }
+    
+    func filterBikes(_ bikes: [Bike], prefs: BikePreferences?) -> [Bike] {
+        let prefs = prefs ?? nonFilteredPrefs()
+        
+        return bikes.filter { bike in
+            // TODO use enum for bike type instead of strings
+            (prefs.mountain && bike.type == "mountain") ||
+            (prefs.road && bike.type == "road") ||
+            (prefs.hybrid && bike.type == "hybrid") ||
+            (prefs.electric && bike.electric) ||
+            (prefs.nonElectric && !bike.electric) ||
+            (prefs.price_1 && bike.priceNumber < 500) ||
+            (prefs.price_2 && bike.priceNumber >= 500 && bike.priceNumber < 1000) ||
+            (prefs.price_3 && bike.priceNumber >= 1000 && bike.priceNumber < 3000) ||
+            (prefs.price_4 && bike.priceNumber >= 3000)
+        }
+    }
+    
+    // if the user hasn't stored any prefs yet, we don't filter, i.e. accept everything
+    func nonFilteredPrefs() -> BikePreferences {
+        return BikePreferences(mountain: true, road: true, hybrid: true, electric: true, nonElectric: true,
+                                    price_1: true, price_2: true, price_3: true, price_4: true)
+    }
+    
     
     func dislike(_ bike: Bike) {
         dontShowAgain(bike)

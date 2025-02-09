@@ -11,9 +11,21 @@ struct BikePreferences: Codable {
     var price_2: Bool = false
     var price_3: Bool = false
     var price_4: Bool = false
+    
+    init(mountain: Bool, road: Bool, hybrid: Bool, electric: Bool, nonElectric: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
+        self.mountain = mountain
+        self.road = road
+        self.hybrid = hybrid
+        self.electric = electric
+        self.nonElectric = nonElectric
+        self.price_1 = price_1
+        self.price_2 = price_2
+        self.price_3 = price_3
+        self.price_4 = price_4
+    }
 }
 
-enum BikeType {
+enum BikeType: Decodable, Hashable {
     case road, mountain, hybrid
 }
 
@@ -50,7 +62,8 @@ enum BikePreferenceStep {
 }
 
 struct BikePreferencesView: View {
-    @State private var preferences = BikePreferences()
+    @State private var preferences = BikePreferences(mountain: false, road: false, hybrid: false, electric: false,
+                                                     nonElectric: false, price_1: false, price_2: false, price_3: false, price_4: false)
     @State private var currentStep: BikePreferenceStep = .type
     
     @Environment(\.modelContext) private var modelContext
