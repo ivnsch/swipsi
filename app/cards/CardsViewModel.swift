@@ -127,5 +127,12 @@ class CardsViewModel: ObservableObject {
             order: currentCount
         )
         modelContext.insert(like)
+        
+        do {
+            try modelContext.save()
+        } catch {
+            // TODO error handling
+            print("error saving: \(error)")
+        }
     }
 }
