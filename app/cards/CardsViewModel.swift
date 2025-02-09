@@ -70,8 +70,13 @@ class CardsViewModel: ObservableObject {
     
     func like(_ bike: Bike) {
         dontShowAgain(bike)
-        saveLike(bike)
-        removeCard(bike)
+        do {
+            try saveLike(bike)
+            removeCard(bike)
+        } catch {
+            // TODO error handling
+            print("Error saving like: \(error)")
+        }
     }
     
     private func dontShowAgain(_ bike: Bike) {
@@ -85,12 +90,25 @@ class CardsViewModel: ObservableObject {
         cardModels.remove(at: index)
     }
     
-    private func saveLike(_ bike: Bike) {
+    private func saveLike(_ bike: Bike) throws {
         guard let modelContext = modelContext else {
             print("Invalid state: model context not set")
             return
         }
         
+        // don't insert again if it has same id
+        // normally this shouldn't happen as already swiped cards shouldn't be presented again
+        // but maybe we're not considering edge cases
+        let bikeId = bike.id  // Capture the value
+        let descriptor = FetchDescriptor<LikedBike>(
+            predicate: #Predicate { $0.id == bikeId }
+        )
+        let likedBikesForId = try modelContext.fetch(descriptor)
+        guard likedBikesForId.isEmpty else {
+            print("Invalid state: trying to add an already liked object (by id) to likes")
+            return
+        }
+
         let currentCount = cardModels.count
 
         // for now we'll assume that there's no repetition,
