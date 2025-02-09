@@ -28,7 +28,6 @@ struct LikedBikeDetailsInfoView: View {
             }
             Text(bike.descr)
                 .font(.subheadline)
-                .lineLimit(2)
         }
         .padding()
     }
