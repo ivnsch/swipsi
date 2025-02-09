@@ -34,7 +34,7 @@ struct appApp: App {
                     }
                 LikedBikesView()
                     .tabItem {
-                        Label("Selected", systemImage: "star")
+                        Label("Favs", systemImage: "star")
                     }
                 BikePreferencesView()
                     .tabItem {
