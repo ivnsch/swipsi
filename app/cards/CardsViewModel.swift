@@ -91,6 +91,8 @@ class CardsViewModel: ObservableObject {
             return
         }
         
+        let currentCount = cardModels.count
+
         // for now we'll assume that there's no repetition,
         // an item with the same id as an already liked one would not be shown again and thus ux should not allow to like twice
         let like = LikedBike(
@@ -103,7 +105,8 @@ class CardsViewModel: ObservableObject {
             vendorLink: bike.vendorLink,
             type: bike.type,
             electric: bike.electric,
-            descr: bike.descr
+            descr: bike.descr,
+            order: currentCount
         )
         modelContext.insert(like)
     }

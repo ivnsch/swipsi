@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct LikedBikesView: View {
-    @Query(sort: [SortDescriptor(\LikedBike.likedDate, order: .forward)])
+    @Query(sort: [SortDescriptor(\LikedBike.order, order: .forward)])
     private var bikes: [LikedBike]
     
     @Environment(\.modelContext) private var modelContext
@@ -41,6 +41,9 @@ struct LikedBikesView: View {
                             }
                         }
                     }
+                    .onMove(perform: { indexSet, dest in
+                        moveItem(from: indexSet, to: dest)
+                    })
                     .onDelete(perform: deleteItems)
                 }
                 .navigationTitle("Favs")
@@ -48,6 +51,19 @@ struct LikedBikesView: View {
                 Text("Select a Landmark")
             }
             
+    }
+    
+    private func moveItem(from source: IndexSet, to destination: Int) {
+        var updatedItems = bikes
+        
+        updatedItems.move(fromOffsets: source, toOffset: destination)
+
+        for (index, item) in updatedItems.enumerated() {
+            item.order = index
+        }
+
+        // we'll just ignore errors here as moving items can be seen as non critical..
+        try? modelContext.save()
     }
     
     private func deleteItems(offsets: IndexSet) {
