@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BikeInfoView: View {
-    let bike: Bike
+    let bike: BikeInfos
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -47,4 +47,13 @@ struct BikeInfoView: View {
         .foregroundStyle(.white)
 
     }
+}
+
+// common lightweight class to use this from places with different models
+struct BikeInfos {
+    var name: String
+    var brand: String
+    var price: String
+    var type: String
+    var electric: Bool
 }

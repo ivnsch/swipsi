@@ -37,7 +37,7 @@ struct LikedBikeDetailsView: View {
                     CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: bike.pictures.count)
                     
                 }
-    //            BikeInfoView(bike: bike)
+                BikeInfoView(bike: BikeInfos(name: bike.name, brand: bike.brand, price: bike.price, type: bike.type, electric: bike.electric))
             }
             .navigationTitle(bike.name)
             .frame(width: UIScreen.main.bounds.width, height: SizeConstants.cardHeight)

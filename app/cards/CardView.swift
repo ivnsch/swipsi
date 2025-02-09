@@ -34,7 +34,7 @@ struct CardView: View {
                 SwipeActionIndicatorView(xOffset: $xOffset)
                 
             }
-            BikeInfoView(bike: bike)
+            BikeInfoView(bike: BikeInfos(name: bike.name, brand: bike.brand, price: bike.price, type: bike.type, electric: bike.electric))
         }
         .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
         .clipShape(RoundedRectangle(cornerRadius: 10))
