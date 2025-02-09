@@ -18,7 +18,7 @@ struct ContentView: View {
         NavigationSplitView {
             
             CardStackView()
-                .navigationTitle("Search")
+                .navigationTitle("Select")
 
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)

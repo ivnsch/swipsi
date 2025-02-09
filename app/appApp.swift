@@ -30,11 +30,11 @@ struct appApp: App {
             TabView {
                 ContentView()
                     .tabItem {
-                        Label("Search", systemImage: "magnifyingglass")
+                        Label("Select", systemImage: "checkmark.circle")
                     }
                 LikedBikesView()
                     .tabItem {
-                        Label("Likes", systemImage: "heart")
+                        Label("Selected", systemImage: "heart")
                     }
                 BikePreferencesView()
                     .tabItem {

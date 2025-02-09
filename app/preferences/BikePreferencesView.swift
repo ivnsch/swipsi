@@ -76,7 +76,7 @@ struct BikePreferencesView: View {
                             currentStep = nextStep
                         }
                     } else {
-                        BorderedButton("Search") {
+                        BorderedButton("Select") {
                             onSearch()
                         }
                     }

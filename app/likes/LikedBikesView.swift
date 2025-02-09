@@ -40,7 +40,7 @@ struct LikedBikesView: View {
                         }
                     }
                 }
-                .navigationTitle("Likes")
+                .navigationTitle("Selected")
             } detail: {
                 Text("Select a Landmark")
             }
