@@ -57,9 +57,7 @@ struct BikePreferencesView: View {
                 case .electric:
                     BikeElectricView(preferences: $preferences)
                 case .priceRange:
-                    BikePriceRangeView(preferences: $preferences) {
-                        onSearch()
-                    }
+                    BikePriceRangeView(preferences: $preferences)
                 }
                 
                 HStack {
@@ -71,6 +69,10 @@ struct BikePreferencesView: View {
                     if let nextStep = currentStep.nextStep {
                         Button("Next") {
                             currentStep = nextStep
+                        }
+                    } else {
+                        Button("Search") {
+                            onSearch()
                         }
                     }
                 }
@@ -139,7 +141,6 @@ struct BikeElectricView: View {
 
 struct BikePriceRangeView: View {
     @Binding var preferences: BikePreferences
-    var onSearch: () -> Void
 
     var body: some View {
         VStack {
@@ -159,9 +160,6 @@ struct BikePriceRangeView: View {
                 preferences.price_4 = !preferences.price_4
             }
             .preferenceButton(selected: preferences.price_4)
-            Button("Search!") {
-                onSearch()
-            }
         }
     }
 }
