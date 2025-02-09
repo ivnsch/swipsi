@@ -4,7 +4,6 @@ struct CardStackView: View {
     @Environment(\.modelContext) private var modelContext
     
     @StateObject var viewModel = CardsViewModel(api: Api())
-    
 
     var body: some View {
         ZStack {
@@ -14,6 +13,7 @@ struct CardStackView: View {
         }
         .onAppear {
             viewModel.setModelContext(modelContext)
+            viewModel.fetchCardModels()
         }
     }
 }

@@ -19,7 +19,9 @@ class CardsViewModel: ObservableObject {
     
     init(api: Api) {
         self.api = api
-
+    }
+    
+    func fetchCardModels() {
         Task { await fetchCardModels() }
     }
     
