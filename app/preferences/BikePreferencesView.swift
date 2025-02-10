@@ -65,10 +65,60 @@ enum BikePreferenceStep {
     }
 }
 
+struct PreferencesOutlineView: View {
+    @State private var isEditing: Bool = false
+    
+    var body: some View {
+        ZStack {
+            if let prefs = preferences() {
+                if isEditing {
+                    BikePreferencesView(preferences: prefs, onSave: {
+                        isEditing = false
+                    })
+                } else {
+                    InitSummaryView(preferences: prefs, onEdit: {
+                        isEditing = true
+                    })
+                }
+            } else {
+                BikePreferencesView(preferences: BikePreferences(mountain: false, road: false, hybrid: false, electric: false, nonElectric: false, price_1: false, price_2: false, price_3: false, price_4: false), onSave: {
+                    isEditing = false
+                })
+            }
+        }
+    }
+    
+    func preferences() -> BikePreferences? {
+        do {
+            return try Prefs.loadBikePrefs()
+        } catch {
+            // TODO error handling
+            print("error loading prefs: \(error)")
+            return nil
+        }
+    }
+}
+
+struct InitSummaryView: View {
+    @State var preferences: BikePreferences
+    let onEdit: () -> Void
+    
+    var body: some View {
+        VStack {
+            BikePreferencesSummaryView(preferences: preferences)
+            BorderedButton("Edit") {
+                onEdit()
+            }
+            .opacity(0.5)
+        }
+    }
+}
+
 struct BikePreferencesView: View {
-    @State private var preferences = BikePreferences(mountain: false, road: false, hybrid: false, electric: false,
-                                                     nonElectric: false, price_1: false, price_2: false, price_3: false, price_4: false)
+    @State var preferences: BikePreferences
     @State private var currentStep: BikePreferenceStep = .type
+    
+    var onSave: () -> Void
     
     @Environment(\.modelContext) private var modelContext
 
@@ -112,6 +162,7 @@ struct BikePreferencesView: View {
                     } else {
                         BorderedButton("Save") {
                             onSearch()
+                            onSave()
                         }
                     }
                 }
