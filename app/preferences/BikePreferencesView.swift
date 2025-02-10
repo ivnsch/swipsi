@@ -110,7 +110,7 @@ struct BikePreferencesView: View {
                             }
                         }
                     } else {
-                        BorderedButton("Select") {
+                        BorderedButton("Save") {
                             onSearch()
                         }
                     }

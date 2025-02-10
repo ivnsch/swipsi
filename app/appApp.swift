@@ -30,7 +30,7 @@ struct appApp: App {
             TabView {
                 ContentView()
                     .tabItem {
-                        Label("Select", systemImage: "sparkle.magnifyingglass")
+                        Label("Browse", systemImage: "sparkle.magnifyingglass")
                     }
                 LikedBikesView()
                     .tabItem {
