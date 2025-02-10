@@ -29,13 +29,22 @@ struct LikedBikesView: View {
                                         ProgressView()
                                     }
                                 }
-                                
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+
                                 VStack(alignment: .leading) {
                                     Text(bike.name)
                                     Text(bike.brand)
                                     Text(bike.price)
-                                    Text(bike.type)
-                                    Text(bike.electric ? "Electric" : "Non-Electric")
+                                    HStack {
+                                        Text(bike.type)
+                                            .font(.system(size: 10))
+                                            .padding(4)
+                                            .borderedBgLight(color: .black)
+                                        Text(bike.electric ? "Electric" : "Non-Electric")
+                                            .font(.system(size: 10))
+                                            .padding(4)
+                                            .borderedBgLight(color: .black)
+                                    }
                                 }
                                 
                             }

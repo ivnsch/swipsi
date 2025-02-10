@@ -29,10 +29,10 @@ struct BikeInfoView: View {
             HStack {
                 Text(bike.type)
                     .padding(4)
-                    .borderedBg()
+                    .borderedBg(color: .white)
                 Text(bike.electric ? "Electric" : "Non-Electric")
                     .padding(4)
-                    .borderedBg()
+                    .borderedBg(color: .white)
             }
             Text(bike.descr)
                 .font(.subheadline)
