@@ -33,27 +33,35 @@ class CardsViewModel: ObservableObject {
         do {
             let bikes = try await api.getBikes()
             let prefs = try Prefs.loadBikePrefs()
-            self.cardModels = filterBikes(bikes, prefs: prefs)
+            let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp();
+            self.cardModels = filterBikes(bikes, prefs: prefs, lastSwipedTimestamp: lastSwipedTimestamp)
         } catch {
             print("Failed to fetch cards with error: \(error)")
         }
     }
     
-    func filterBikes(_ bikes: [Bike], prefs: BikePreferences?) -> [Bike] {
+    func filterBikes(_ bikes: [Bike], prefs: BikePreferences?, lastSwipedTimestamp: UInt64?) -> [Bike] {
         let prefs = prefs ?? nonFilteredPrefs()
-        
+        let lastSwipedTimestamp = lastSwipedTimestamp ?? 0
         return bikes.filter { bike in
-            // TODO use enum for bike type instead of strings
-            (prefs.mountain && bike.type == "mountain") ||
-            (prefs.road && bike.type == "road") ||
-            (prefs.hybrid && bike.type == "hybrid") ||
-            (prefs.electric && bike.electric) ||
-            (prefs.nonElectric && !bike.electric) ||
-            (prefs.price_1 && bike.priceNumber < 500) ||
-            (prefs.price_2 && bike.priceNumber >= 500 && bike.priceNumber < 1000) ||
-            (prefs.price_3 && bike.priceNumber >= 1000 && bike.priceNumber < 3000) ||
-            (prefs.price_4 && bike.priceNumber >= 3000)
+            // don't show already swiped (left or right) cards again
+            (bike.addedTimestamp > lastSwipedTimestamp) &&
+            // show only bikes that match preferences
+            matchBikeToPrefs(bike: bike, prefs: prefs)
         }
+    }
+    
+    func matchBikeToPrefs(bike: Bike, prefs: BikePreferences) -> Bool {
+        // TODO use enum for bike type instead of strings
+        (prefs.mountain && bike.type == "mountain") ||
+        (prefs.road && bike.type == "road") ||
+        (prefs.hybrid && bike.type == "hybrid") ||
+        (prefs.electric && bike.electric) ||
+        (prefs.nonElectric && !bike.electric) ||
+        (prefs.price_1 && bike.priceNumber < 500) ||
+        (prefs.price_2 && bike.priceNumber >= 500 && bike.priceNumber < 1000) ||
+        (prefs.price_3 && bike.priceNumber >= 1000 && bike.priceNumber < 3000) ||
+        (prefs.price_4 && bike.priceNumber >= 3000)
     }
     
     // if the user hasn't stored any prefs yet, we don't filter, i.e. accept everything
@@ -65,18 +73,34 @@ class CardsViewModel: ObservableObject {
     
     func dislike(_ bike: Bike) {
         dontShowAgain(bike)
+        do {
+            try saveTimestamp(bike)
+        } catch {
+            print("Error saving timestamp: \(error)")
+        }
         removeCard(bike)
     }
     
     func like(_ bike: Bike) {
         dontShowAgain(bike)
         do {
+            try saveTimestamp(bike)
+        } catch {
+            // TODO error handling
+            print("Error saving timestamp: \(error)")
+        }
+        do {
             try saveLike(bike)
-            removeCard(bike)
         } catch {
             // TODO error handling
             print("Error saving like: \(error)")
         }
+        removeCard(bike)
+
+    }
+    
+    func saveTimestamp(_ bike: Bike) throws {
+        try Prefs.saveLastSwipedTimestamp(bike.addedTimestamp)
     }
     
     private func dontShowAgain(_ bike: Bike) {

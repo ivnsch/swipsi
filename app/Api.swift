@@ -11,6 +11,7 @@ struct Bike: Identifiable, Decodable, Hashable {
     var type: String
     var electric: Bool
     var descr: String
+    var addedTimestamp: UInt64
 }
 
 class Api: ObservableObject {
