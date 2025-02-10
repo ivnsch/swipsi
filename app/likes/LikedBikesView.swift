@@ -80,6 +80,7 @@ private struct LikeView: View {
             VStack(alignment: .leading) {
                 Text(bike.name)
                 Text(bike.brand)
+                    .foregroundColor(.gray)
                 Text(bike.price)
                 HStack {
                     Text(bike.type)
