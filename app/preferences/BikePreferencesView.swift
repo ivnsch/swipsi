@@ -25,6 +25,10 @@ struct BikePreferences: Codable {
     }
 }
 
+enum ValidationError {
+    case atLeastOneSelected
+}
+
 enum BikeType: Decodable, Hashable {
     case road, mountain, hybrid
 }
@@ -68,9 +72,16 @@ struct BikePreferencesView: View {
     
     @Environment(\.modelContext) private var modelContext
 
+    @State private var validationError: ValidationError?
+    
     var body: some View {
         NavigationStack {
             VStack {
+                if let v = validationError {
+                    Text(validationMessage(v))
+                        .padding(.bottom, 20)
+                        .foregroundColor(.red)
+                }
                 switch currentStep {
                 case .type:
                     BikeTypeView(preferences: $preferences)
@@ -85,12 +96,18 @@ struct BikePreferencesView: View {
                     if let previousStep = currentStep.previousStep {
                         BorderedButton("Previous") {
                             currentStep = previousStep
+                            self.validationError = nil
                         }
                         .opacity(0.5)
                     }
                     if let nextStep = currentStep.nextStep {
                         BorderedButton("Next") {
-                            currentStep = nextStep
+                            if let error = validate(currentStep: currentStep, preferences: preferences) {
+                                self.validationError = error
+                            } else {
+                                currentStep = nextStep
+                                self.validationError = nil
+                            }
                         }
                     } else {
                         BorderedButton("Select") {
@@ -100,6 +117,28 @@ struct BikePreferencesView: View {
                 }
             }
             .navigationTitle(currentStep.title)
+        }
+    }
+    
+    func validate(currentStep: BikePreferenceStep, preferences: BikePreferences) -> ValidationError? {
+        switch currentStep {
+        case .type: if !preferences.mountain && !preferences.road && !preferences.hybrid {
+            return .atLeastOneSelected
+        }
+        case .electric: if !preferences.electric && !preferences.nonElectric {
+            return .atLeastOneSelected
+        }
+        case .priceRange: if !preferences.price_1 && !preferences.price_2 && !preferences.price_3 && !preferences.price_4 {
+            return .atLeastOneSelected
+        }
+        case .summary: return nil
+        }
+        return nil
+    }
+    
+    func validationMessage(_ validationError: ValidationError) -> String {
+        switch validationError {
+        case .atLeastOneSelected: return "Please choose at least one option"
         }
     }
     
@@ -194,6 +233,7 @@ struct BorderedButton: View {
         }
     }
 }
+
 
 struct BikeTypeView: View {
     @Binding var preferences: BikePreferences
