@@ -86,6 +86,7 @@ struct BikePreferencesView: View {
                         BorderedButton("Previous") {
                             currentStep = previousStep
                         }
+                        .opacity(0.5)
                     }
                     if let nextStep = currentStep.nextStep {
                         BorderedButton("Next") {
