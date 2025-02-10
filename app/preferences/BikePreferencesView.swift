@@ -163,46 +163,67 @@ struct BikePreferencesSummaryView: View {
     @State var preferences: BikePreferences
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Text("Type:")
-            VStack {
+            VStack(alignment: .leading) {
                 if preferences.mountain {
                     Text("Mountain")
+                        .summaryEntry()
                 }
                 if preferences.road {
                     Text("Road")
+                        .summaryEntry()
+
                 }
                 if preferences.hybrid {
                     Text("Hybrid")
+                        .summaryEntry()
                 }
             }
             
             Text("Electric:")
-            VStack {
+                .padding(.top, 10)
+            
+            VStack(alignment: .leading) {
                 if preferences.electric {
                     Text("Electric")
+                        .summaryEntry()
                 }
                 if preferences.nonElectric {
                     Text("Non-Electric")
+                        .summaryEntry()
                 }
             }
             
             Text("Price:")
-            VStack {
+                .padding(.top, 10)
+
+            VStack(alignment: .leading) {
                 if preferences.price_1 {
                     Text("€")
+                        .summaryEntry()
                 }
                 if preferences.price_2 {
                     Text("€€")
+                        .summaryEntry()
                 }
                 if preferences.price_3 {
                     Text("€€€")
+                        .summaryEntry()
                 }
                 if preferences.price_4 {
                     Text("€€€€")
+                        .summaryEntry()
                 }
             }
         }
+    }
+}
+
+private extension Text {
+    func summaryEntry() -> some View {
+        font(.system(size: 30))
+            .fontWeight(.medium)
     }
 }
 
