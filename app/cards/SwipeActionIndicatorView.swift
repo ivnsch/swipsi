@@ -26,7 +26,7 @@ struct SwipeActionIndicatorView: View {
             
             Spacer()
             
-            Text("NOPE")
+            Text("PASS")
                 .font(.title)
                 .fontWeight(.heavy)
                 .foregroundStyle(.red)

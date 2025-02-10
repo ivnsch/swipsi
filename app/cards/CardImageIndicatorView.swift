@@ -16,7 +16,7 @@ struct CardImageIndicatorView: View {
             
             ForEach(0..<imageCount, id: \.self) { index in
                 Capsule()
-                    .foregroundStyle(currentImageIndex == index ? .red : .gray)
+                    .foregroundStyle(currentImageIndex == index ? .blue : .gray)
                     .frame(width: imageIndicatorWidth, height: 4)
                     .padding(.top, 8)
             }
