@@ -35,6 +35,8 @@ struct ContentView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Theme.mainBg.ignoresSafeArea())
         } detail: {
             Text("Select an item")
         }
