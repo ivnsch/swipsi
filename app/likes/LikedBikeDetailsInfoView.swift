@@ -10,19 +10,10 @@ struct LikedBikeDetailsInfoView: View {
                     .font(.title)
                     .fontWeight(.heavy)
                 
-                VStack {
-                    Text(bike.brand)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                }
-                
                 Spacer()
             }
             HStack {
                 Text(bike.type)
-                    .padding(4)
-                    .borderedBg(color: .black)
-                Text(bike.electric ? "Electric" : "Non-Electric")
                     .padding(4)
                     .borderedBg(color: .black)
             }

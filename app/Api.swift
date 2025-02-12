@@ -3,13 +3,11 @@ import Foundation
 struct Bike: Identifiable, Decodable, Hashable {
     var id: String
     var name: String
-    var brand: String
     var price: String
     var priceNumber: Float
     var pictures: [String]
     var vendorLink: String
     var type: String
-    var electric: Bool
     var descr: String
     var addedTimestamp: UInt64
 }

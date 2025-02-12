@@ -5,19 +5,15 @@ struct BikePreferences: Codable {
     var mountain: Bool = false
     var road: Bool = false
     var hybrid: Bool = false
-    var electric: Bool = false
-    var nonElectric: Bool = false
     var price_1: Bool = false
     var price_2: Bool = false
     var price_3: Bool = false
     var price_4: Bool = false
     
-    init(mountain: Bool, road: Bool, hybrid: Bool, electric: Bool, nonElectric: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
+    init(mountain: Bool, road: Bool, hybrid: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
         self.mountain = mountain
         self.road = road
         self.hybrid = hybrid
-        self.electric = electric
-        self.nonElectric = nonElectric
         self.price_1 = price_1
         self.price_2 = price_2
         self.price_3 = price_3
@@ -34,12 +30,11 @@ enum BikeType: Decodable, Hashable {
 }
 
 enum BikePreferenceStep {
-    case type, electric, priceRange, summary
+    case type, priceRange, summary
     
     var title: String {
         switch self {
             case .type: return "Type"
-            case .electric: return "Electric?"
             case .priceRange: return "Price Range"
             case .summary: return "Summary"
         }
@@ -48,16 +43,14 @@ enum BikePreferenceStep {
     var previousStep: BikePreferenceStep? {
         switch self {
         case .type: return nil
-        case .electric: return .type
-        case .priceRange: return .electric
+        case .priceRange: return .type
         case .summary: return .priceRange
         }
     }
     
     var nextStep: BikePreferenceStep? {
         switch self {
-        case .type: return .electric
-        case .electric: return .priceRange
+        case .type: return .priceRange
         case .priceRange: return .summary
         case .summary: return nil
 
@@ -81,7 +74,7 @@ struct PreferencesOutlineView: View {
                     })
                 }
             } else {
-                BikePreferencesView(preferences: BikePreferences(mountain: false, road: false, hybrid: false, electric: false, nonElectric: false, price_1: false, price_2: false, price_3: false, price_4: false), onSave: {
+                BikePreferencesView(preferences: BikePreferences(mountain: false, road: false, hybrid: false, price_1: false, price_2: false, price_3: false, price_4: false), onSave: {
                     isEditing = false
                 })
             }
@@ -135,8 +128,6 @@ struct BikePreferencesView: View {
                 switch currentStep {
                 case .type:
                     BikeTypeView(preferences: $preferences)
-                case .electric:
-                    BikeElectricView(preferences: $preferences)
                 case .priceRange:
                     BikePriceRangeView(preferences: $preferences)
                 case .summary:
@@ -174,9 +165,6 @@ struct BikePreferencesView: View {
     func validate(currentStep: BikePreferenceStep, preferences: BikePreferences) -> ValidationError? {
         switch currentStep {
         case .type: if !preferences.mountain && !preferences.road && !preferences.hybrid {
-            return .atLeastOneSelected
-        }
-        case .electric: if !preferences.electric && !preferences.nonElectric {
             return .atLeastOneSelected
         }
         case .priceRange: if !preferences.price_1 && !preferences.price_2 && !preferences.price_3 && !preferences.price_4 {
@@ -228,20 +216,6 @@ struct BikePreferencesSummaryView: View {
                 }
                 if preferences.hybrid {
                     Text("Hybrid")
-                        .summaryEntry()
-                }
-            }
-            
-            Text("Electric:")
-                .padding(.top, 10)
-            
-            VStack(alignment: .leading) {
-                if preferences.electric {
-                    Text("Electric")
-                        .summaryEntry()
-                }
-                if preferences.nonElectric {
-                    Text("Non-Electric")
                         .summaryEntry()
                 }
             }
@@ -334,30 +308,6 @@ extension Button {
         foregroundColor(selected ? Color.black : Color.gray)
             .font(.system(size: 30))
             .padding(.bottom, 10)
-    }
-}
-
-struct BikeElectricView: View {
-    @Binding var preferences: BikePreferences
-
-    var body: some View {
-        VStack {
-            Button("Yes") {
-                preferences.electric = !preferences.electric
-                preferences.nonElectric = !preferences.electric
-            }
-            .preferenceButton(selected: preferences.electric)
-            Button("No") {
-                preferences.nonElectric = !preferences.nonElectric
-                preferences.electric = !preferences.nonElectric
-            }
-            .preferenceButton(selected: preferences.nonElectric)
-            Button("Both") {
-                preferences.electric = true
-                preferences.nonElectric = true
-            }
-            .preferenceButton(selected: preferences.electric && preferences.nonElectric)
-        }
     }
 }
 

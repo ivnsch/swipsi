@@ -17,20 +17,10 @@ struct BikeInfoView: View {
                     .font(.title)
                     .fontWeight(.heavy)
                 
-                VStack {
-                    Text(bike.brand)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                   
-                }
-                
                 Spacer()
             }
             HStack {
                 Text(bike.type)
-                    .padding(4)
-                    .borderedBg(color: .white)
-                Text(bike.electric ? "Electric" : "Non-Electric")
                     .padding(4)
                     .borderedBg(color: .white)
             }
@@ -50,9 +40,7 @@ struct BikeInfoView: View {
 // common lightweight class to use this from places with different models
 struct BikeInfos {
     var name: String
-    var brand: String
     var price: String
     var type: String
-    var electric: Bool
     var descr: String
 }

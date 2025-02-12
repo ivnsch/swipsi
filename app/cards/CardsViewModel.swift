@@ -56,8 +56,6 @@ class CardsViewModel: ObservableObject {
         (prefs.mountain && bike.type == "mountain") ||
         (prefs.road && bike.type == "road") ||
         (prefs.hybrid && bike.type == "hybrid") ||
-        (prefs.electric && bike.electric) ||
-        (prefs.nonElectric && !bike.electric) ||
         (prefs.price_1 && bike.priceNumber < 500) ||
         (prefs.price_2 && bike.priceNumber >= 500 && bike.priceNumber < 1000) ||
         (prefs.price_3 && bike.priceNumber >= 1000 && bike.priceNumber < 3000) ||
@@ -66,8 +64,7 @@ class CardsViewModel: ObservableObject {
     
     // if the user hasn't stored any prefs yet, we don't filter, i.e. accept everything
     func nonFilteredPrefs() -> BikePreferences {
-        return BikePreferences(mountain: true, road: true, hybrid: true, electric: true, nonElectric: true,
-                                    price_1: true, price_2: true, price_3: true, price_4: true)
+        return BikePreferences(mountain: true, road: true, hybrid: true, price_1: true, price_2: true, price_3: true, price_4: true)
     }
     
     
@@ -140,13 +137,11 @@ class CardsViewModel: ObservableObject {
         let like = LikedBike(
             id: bike.id,
             name: bike.name,
-            brand: bike.brand,
             price: bike.price,
             pictures: bike.pictures,
             likedDate: Date(),
             vendorLink: bike.vendorLink,
             type: bike.type,
-            electric: bike.electric,
             descr: bike.descr,
             order: currentCount
         )

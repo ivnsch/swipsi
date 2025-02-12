@@ -79,15 +79,9 @@ private struct LikeView: View {
 
             VStack(alignment: .leading) {
                 Text(bike.name)
-                Text(bike.brand)
-                    .foregroundColor(.gray)
                 Text(bike.price)
                 HStack {
                     Text(bike.type)
-                        .font(.system(size: 10))
-                        .padding(4)
-                        .borderedBgLight(color: .black)
-                    Text(bike.electric ? "Electric" : "Non-Electric")
                         .font(.system(size: 10))
                         .padding(4)
                         .borderedBgLight(color: .black)
