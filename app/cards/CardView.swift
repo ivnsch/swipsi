@@ -17,7 +17,7 @@ struct CardView: View {
                         if let image = phase.image {
                             image
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .aspectRatio(contentMode: .fit)
                                 // for some reason differently to video it's needed to leave frame here too
                                 // otherwise the info view doesn't show
                                 .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
