@@ -14,23 +14,15 @@ struct BikeInfoView: View {
         VStack(alignment: .leading) {
             HStack {
                 Text(bike.name)
-                    .font(.title)
+                    .font(.subheadline)
                     .fontWeight(.heavy)
-                    .lineLimit(1)
+                    .lineLimit(2)
                 Spacer()
             }
-            HStack {
-                Text(bike.type)
-                    .padding(4)
-                    .borderedBg(color: .black)
-            }
-            Text(bike.descr)
-                .font(.subheadline)
-                .lineLimit(2)
         }
         .padding()
         .background(
-            LinearGradient(colors: [.clear, .white.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [.clear, .white.opacity(0.5)], startPoint: .top, endPoint: .bottom)
         )
         .foregroundStyle(.black)
 
