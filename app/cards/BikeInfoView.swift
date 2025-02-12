@@ -16,7 +16,7 @@ struct BikeInfoView: View {
                 Text(bike.name)
                     .font(.title)
                     .fontWeight(.heavy)
-                
+                    .lineLimit(2)
                 Spacer()
             }
             HStack {
