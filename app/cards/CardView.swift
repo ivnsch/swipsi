@@ -33,7 +33,9 @@ struct CardView: View {
                         ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
                     }
                 }
-                CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
+                if bike.pictures.count > 1 {
+                    CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
+                }
                 SwipeActionIndicatorView(xOffset: $xOffset)
                 
             }

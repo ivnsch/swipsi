@@ -33,8 +33,9 @@ struct LikedBikeDetailsView: View {
                 .overlay {
                     ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: bike.pictures.count)
                 }
-                CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: bike.pictures.count)
-                
+                if bike.pictures.count > 1 {
+                    CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: bike.pictures.count)
+                }
             }
             .frame(width: UIScreen.main.bounds.width, height: SizeConstants.cardHeight)
             LikedBikeDetailsInfoView(bike: BikeInfos(name: bike.name, price: bike.price, type: bike.type, descr: bike.descr))
