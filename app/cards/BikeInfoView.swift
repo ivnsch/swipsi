@@ -22,7 +22,7 @@ struct BikeInfoView: View {
             HStack {
                 Text(bike.type)
                     .padding(4)
-                    .borderedBg(color: .white)
+                    .borderedBg(color: .black)
             }
             Text(bike.descr)
                 .font(.subheadline)
@@ -30,9 +30,9 @@ struct BikeInfoView: View {
         }
         .padding()
         .background(
-            LinearGradient(colors: [.clear, .black.opacity(0.1)], startPoint: .top, endPoint: .bottom)
+            LinearGradient(colors: [.clear, .white.opacity(0.1)], startPoint: .top, endPoint: .bottom)
         )
-        .foregroundStyle(.white)
+        .foregroundStyle(.black)
 
     }
 }
