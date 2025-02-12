@@ -12,23 +12,25 @@ struct CardView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                AsyncImage(url: URL(string: bike.pictures[currentImageIndex])) { phase in
-                    if let image = phase.image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            // for some reason differently to video it's needed to leave frame here too
-                            // otherwise the info view doesn't show
-                            .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
-                            .clipped()
-                    } else if phase.error != nil {
-                        Color.red
-                    } else {
-                        ProgressView()
+                if !bike.pictures.isEmpty {
+                    AsyncImage(url: URL(string: bike.pictures[currentImageIndex])) { phase in
+                        if let image = phase.image {
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                // for some reason differently to video it's needed to leave frame here too
+                                // otherwise the info view doesn't show
+                                .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
+                                .clipped()
+                        } else if phase.error != nil {
+                            Color.red
+                        } else {
+                            ProgressView()
+                        }
                     }
-                }
-                .overlay {
-                    ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
+                    .overlay {
+                        ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
+                    }
                 }
                 CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
                 SwipeActionIndicatorView(xOffset: $xOffset)
