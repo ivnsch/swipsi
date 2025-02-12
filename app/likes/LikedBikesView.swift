@@ -61,21 +61,22 @@ private struct LikeView: View {
 
     var body: some View {
         HStack {
-            // TODO handle no pic
-            AsyncImage(url: URL(string: bike.pictures[0])) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 100, height: 100)
-                        .clipped()
-                } else if phase.error != nil {
-                    Color.red
-                } else {
-                    ProgressView()
+            if !bike.pictures.isEmpty {
+                AsyncImage(url: URL(string: bike.pictures[0])) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 100, height: 100)
+                            .clipped()
+                    } else if phase.error != nil {
+                        Color.red
+                    } else {
+                        ProgressView()
+                    }
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
-            .clipShape(RoundedRectangle(cornerRadius: 10))
 
             VStack(alignment: .leading) {
                 Text(bike.name)
