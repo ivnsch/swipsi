@@ -22,16 +22,26 @@ class CardsViewModel: ObservableObject {
     }
     
     func startFetchCardModels() {
-        Task { await fetchCardModels() }
+        do {
+            // we start after the last card that was swiped, or from beginning (0 timestamp) if user hasn't swiped yet
+            let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp() ?? 0
+            startFetchCardModels(afterTimestamp: lastSwipedTimestamp)
+        } catch {
+            print("error retrieving lastSwipedTimestamp: \(error)")
+        }
+    }
+    
+    func startFetchCardModels(afterTimestamp: UInt64) {
+        Task { await fetchCardModels(afterTimestamp: afterTimestamp) }
     }
     
     func setModelContext(_ modelContext: ModelContext) {
         self.modelContext = modelContext
     }
     
-    func fetchCardModels() async {
+    func fetchCardModels(afterTimestamp: UInt64) async {
         do {
-            let bikes = try await api.getBikes()
+            let bikes = try await api.getBikes(afterTimestamp: afterTimestamp)
             let prefs = try Prefs.loadBikePrefs()
             let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp();
             self.cardModels = filterBikes(bikes, prefs: prefs, lastSwipedTimestamp: lastSwipedTimestamp)
@@ -109,6 +119,18 @@ class CardsViewModel: ObservableObject {
     private func removeCard(_ bike: Bike) {
         guard let index = cardModels.firstIndex(where: { $0.id == bike.id }) else { return }
         cardModels.remove(at: index)
+        
+        // if there are n cards left, fetch the next batch
+        // note that we don't need any conditions for "stop fetching batches":
+        // when the server doesn't send new items, nothing is added, so if user continues swiping
+        // the "n cards left" condition doesn't happen again
+        if cardModels.count == 10 {
+            if let lastItem = cardModels.last {
+                startFetchCardModels(afterTimestamp: lastItem.addedTimestamp)
+            } else {
+                print("Invalid state: we just checked that there are 10 cardModels, should have `last`")
+            }
+        }
     }
     
     private func saveLike(_ bike: Bike) throws {
