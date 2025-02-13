@@ -86,6 +86,11 @@ struct PreferencesOutlineView: View {
                 })
             }
         }
+        .onAppear() {
+            if preferences() == nil {
+                isEditing = true
+            }
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.mainBg.ignoresSafeArea())
     }
