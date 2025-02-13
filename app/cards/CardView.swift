@@ -7,13 +7,13 @@ struct CardView: View {
     @State private var degrees: Double = 0
     @State private var currentImageIndex = 0
 
-    let bike: Bike
+    let item: Item
     
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack(alignment: .top) {
-                if !bike.pictures.isEmpty {
-                    AsyncImage(url: URL(string: bike.pictures[currentImageIndex])) { phase in
+                if !item.pictures.isEmpty {
+                    AsyncImage(url: URL(string: item.pictures[currentImageIndex])) { phase in
                         if let image = phase.image {
                             image
                                 .resizable()
@@ -33,7 +33,7 @@ struct CardView: View {
                         ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
                     }
                 }
-                if bike.pictures.count > 1 {
+                if item.pictures.count > 1 {
                     CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
                 }
                 SwipeActionIndicatorView(xOffset: $xOffset)
@@ -56,7 +56,7 @@ struct CardView: View {
 
 private extension CardView {
     var imageCount: Int {
-        return bike.pictures.count
+        return item.pictures.count
     }
 }
 private extension CardView {
@@ -70,7 +70,7 @@ private extension CardView {
             xOffset = 500
             degrees = 12
         } completion: {
-            viewModel.like(bike)
+            viewModel.like(item)
         }
     }
     
@@ -79,7 +79,7 @@ private extension CardView {
             xOffset = -500
             degrees = -12
         } completion: {
-            viewModel.dislike(bike)
+            viewModel.dislike(item)
         }
     }
 }

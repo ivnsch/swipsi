@@ -1,6 +1,6 @@
 import Foundation
 
-struct Bike: Identifiable, Decodable, Hashable {
+struct Item: Identifiable, Decodable, Hashable {
     var id: String
     var name: String
     var price: String
@@ -18,8 +18,7 @@ struct Filters: Codable {
 }
 
 class Api: ObservableObject {
-    func getBikes(afterTimestamp: UInt64, filters: Filters) async throws -> [Bike] {
-//        let url = URL(string: "http://127.0.0.1:8080/bikes")!
+    func getItems(afterTimestamp: UInt64, filters: Filters) async throws -> [Item] {
         let url = URL(string: "http://192.168.178.24:3000/items/\(afterTimestamp)")!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
@@ -36,8 +35,8 @@ class Api: ObservableObject {
         }
 
         do {
-            let decodedBikes = try JSONDecoder().decode([Bike].self, from: data)
-            return decodedBikes
+            let decodedItems = try JSONDecoder().decode([Item].self, from: data)
+            return decodedItems
         } catch {
             print("🔴 Error decoding:", error)
             throw error

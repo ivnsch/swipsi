@@ -1,21 +1,14 @@
-//
-//  LikedBikeDetailsView.swift
-//  app
-//
-//  Created by Ivan Schuetz on 08.02.25.
-//
-
 import SwiftUI
 
-struct LikedBikeDetailsView: View {
-    let bike: LikedBike
+struct LikedItemDetailsView: View {
+    let item: LikedItem
     
     @State private var currentImageIndex = 0
     
     var body: some View {
         ScrollView {
             ZStack(alignment: .top) {
-                AsyncImage(url: URL(string: bike.pictures[currentImageIndex])) { phase in
+                AsyncImage(url: URL(string: item.pictures[currentImageIndex])) { phase in
                     if let image = phase.image {
                         image
                             .resizable()
@@ -31,22 +24,22 @@ struct LikedBikeDetailsView: View {
                     }
                 }
                 .overlay {
-                    ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: bike.pictures.count)
+                    ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: item.pictures.count)
                 }
-                if bike.pictures.count > 1 {
-                    CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: bike.pictures.count)
+                if item.pictures.count > 1 {
+                    CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: item.pictures.count)
                 }
             }
             .frame(width: UIScreen.main.bounds.width, height: SizeConstants.cardHeight)
-            LikedBikeDetailsInfoView(bike: BikeInfos(name: bike.name, price: bike.price, type: bike.type, descr: bike.descr))
-            .navigationTitle(bike.name)
-            link(bike: bike)
+            LikedItemDetailsInfoView(item: ItemInfos(name: item.name, price: item.price, type: item.type, descr: item.descr))
+            .navigationTitle(item.name)
+            link(item: item)
         }
     }
 }
 
-func link(bike: LikedBike) -> some View {
-    if let url = URL(string: bike.vendorLink) {
+func link(item: LikedItem) -> some View {
+    if let url = URL(string: item.vendorLink) {
         return AnyView(Link("Go to vendor", destination: url))
     } else {
         return AnyView(Text("A problem occurred linking to vendor"))

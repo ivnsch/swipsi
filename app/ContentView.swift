@@ -10,7 +10,6 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
     
     @EnvironmentObject var api: Api
 
@@ -29,11 +28,6 @@ struct ContentView: View {
                     EditButton()
                 }
 #endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Theme.mainBg.ignoresSafeArea())
@@ -41,24 +35,5 @@ struct ContentView: View {
             Text("Select an item")
         }
     }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
-    }
 }
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
-}

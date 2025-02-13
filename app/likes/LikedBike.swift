@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class LikedBike: Identifiable, Hashable {
+final class LikedItem: Identifiable, Hashable {
     var id: String = ""
     var name: String = ""
     var price: String = ""

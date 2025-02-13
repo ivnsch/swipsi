@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct BikePreferences: Codable {
+struct ItemPreferences: Codable {
     var necklace: Bool = false
     var bracelet: Bool = false
     var ring: Bool = false
@@ -29,11 +29,7 @@ enum ValidationError {
     case atLeastOneSelected
 }
 
-enum BikeType: Decodable, Hashable {
-    case road, mountain, hybrid
-}
-
-enum BikePreferenceStep {
+enum ItemPreferenceStep {
     case type, priceRange, summary
     
     var title: String {
@@ -44,7 +40,7 @@ enum BikePreferenceStep {
         }
     }
     
-    var previousStep: BikePreferenceStep? {
+    var previousStep: ItemPreferenceStep? {
         switch self {
         case .type: return nil
         case .priceRange: return .type
@@ -52,7 +48,7 @@ enum BikePreferenceStep {
         }
     }
     
-    var nextStep: BikePreferenceStep? {
+    var nextStep: ItemPreferenceStep? {
         switch self {
         case .type: return .priceRange
         case .priceRange: return .summary
@@ -69,7 +65,7 @@ struct PreferencesOutlineView: View {
         ZStack {
             if let prefs = preferences() {
                 if isEditing {
-                    BikePreferencesView(preferences: prefs, onSave: {
+                    ItemPreferencesView(preferences: prefs, onSave: {
                         isEditing = false
                     })
                 } else {
@@ -78,7 +74,7 @@ struct PreferencesOutlineView: View {
                     })
                 }
             } else {
-                BikePreferencesView(preferences: BikePreferences(
+                ItemPreferencesView(preferences: ItemPreferences(
                     necklace: false, bracelet: false, ring: false, earring: false,
                     price_1: false, price_2: false, price_3: false, price_4: false
                 ), onSave: {
@@ -95,9 +91,9 @@ struct PreferencesOutlineView: View {
         .background(Theme.mainBg.ignoresSafeArea())
     }
     
-    func preferences() -> BikePreferences? {
+    func preferences() -> ItemPreferences? {
         do {
-            return try Prefs.loadBikePrefs()
+            return try Prefs.loadItemPrefs()
         } catch {
             // TODO error handling
             print("error loading prefs: \(error)")
@@ -107,12 +103,12 @@ struct PreferencesOutlineView: View {
 }
 
 struct InitSummaryView: View {
-    @State var preferences: BikePreferences
+    @State var preferences: ItemPreferences
     let onEdit: () -> Void
     
     var body: some View {
         VStack {
-            BikePreferencesSummaryView(preferences: preferences)
+            ItemPreferencesSummaryView(preferences: preferences)
             BorderedButton("Edit") {
                 onEdit()
             }
@@ -121,9 +117,9 @@ struct InitSummaryView: View {
     }
 }
 
-struct BikePreferencesView: View {
-    @State var preferences: BikePreferences
-    @State private var currentStep: BikePreferenceStep = .type
+struct ItemPreferencesView: View {
+    @State var preferences: ItemPreferences
+    @State private var currentStep: ItemPreferenceStep = .type
     
     var onSave: () -> Void
     
@@ -141,11 +137,11 @@ struct BikePreferencesView: View {
                 }
                 switch currentStep {
                 case .type:
-                    BikeTypeView(preferences: $preferences)
+                    ItemTypeView(preferences: $preferences)
                 case .priceRange:
-                    BikePriceRangeView(preferences: $preferences)
+                    ItemPriceRangeView(preferences: $preferences)
                 case .summary:
-                    BikePreferencesSummaryView(preferences: preferences)
+                    ItemPreferencesSummaryView(preferences: preferences)
                 }
                 HStack {
                     if let previousStep = currentStep.previousStep {
@@ -176,7 +172,7 @@ struct BikePreferencesView: View {
         }
     }
     
-    func validate(currentStep: BikePreferenceStep, preferences: BikePreferences) -> ValidationError? {
+    func validate(currentStep: ItemPreferenceStep, preferences: ItemPreferences) -> ValidationError? {
         switch currentStep {
         case .type: if !preferences.necklace && !preferences.bracelet && !preferences.ring  && !preferences.earring {
             return .atLeastOneSelected
@@ -203,7 +199,7 @@ struct BikePreferencesView: View {
     
     func onSearch() {
         do {
-            try Prefs.saveBikePrefs(preferences)
+            try Prefs.saveItemPrefs(preferences)
             // TODO select first tab
         } catch {
             // TODO error handling
@@ -212,8 +208,8 @@ struct BikePreferencesView: View {
     }
 }
 
-struct BikePreferencesSummaryView: View {
-    @State var preferences: BikePreferences
+struct ItemPreferencesSummaryView: View {
+    @State var preferences: ItemPreferences
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -298,9 +294,8 @@ struct BorderedButton: View {
     }
 }
 
-
-struct BikeTypeView: View {
-    @Binding var preferences: BikePreferences
+struct ItemTypeView: View {
+    @Binding var preferences: ItemPreferences
     
     var necklace: Bool = false
     var bracelet: Bool = false
@@ -338,8 +333,8 @@ extension Button {
     }
 }
 
-struct BikePriceRangeView: View {
-    @Binding var preferences: BikePreferences
+struct ItemPriceRangeView: View {
+    @Binding var preferences: ItemPreferences
 
     var body: some View {
         VStack {

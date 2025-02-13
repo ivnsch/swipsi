@@ -8,9 +8,9 @@
 import Foundation
 
 struct CardModel {
-    let bike: Bike
+    let item: Item
 }
 
 extension CardModel: Identifiable, Hashable {
-    var id: String { return bike.id }
+    var id: String { return item.id }
 }

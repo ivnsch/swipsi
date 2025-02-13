@@ -14,7 +14,7 @@ struct appApp: App {
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            LikedBike.self,
+            LikedItem.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -32,7 +32,7 @@ struct appApp: App {
                     .tabItem {
                         Label("Browse", systemImage: "sparkle.magnifyingglass")
                     }
-                LikedBikesView()
+                LikedItemsView()
                     .tabItem {
                         Label("Favs", systemImage: "star")
                     }

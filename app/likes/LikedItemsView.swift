@@ -1,20 +1,20 @@
 import SwiftUI
 import SwiftData
 
-struct LikedBikesView: View {
-    @Query(sort: [SortDescriptor(\LikedBike.order, order: .forward)])
-    private var bikes: [LikedBike]
+struct LikedItemsView: View {
+    @Query(sort: [SortDescriptor(\LikedItem.order, order: .forward)])
+    private var items: [LikedItem]
     
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         NavigationStack {
             List {
-                ForEach(bikes) { bike in
+                ForEach(items) { item in
                     NavigationLink {
-                        LikedBikeDetailsView(bike: bike)
+                        LikedItemDetailsView(item: item)
                     } label: {
-                        LikeView(bike: bike)
+                        LikeView(item: item)
                     }
                 }
                 .onMove(perform: { indexSet, dest in
@@ -30,7 +30,7 @@ struct LikedBikesView: View {
     }
     
     private func moveItem(from source: IndexSet, to destination: Int) {
-        var updatedItems = bikes
+        var updatedItems = items
         
         updatedItems.move(fromOffsets: source, toOffset: destination)
 
@@ -45,7 +45,7 @@ struct LikedBikesView: View {
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
-                modelContext.delete(bikes[index])
+                modelContext.delete(items[index])
             }
             do {
                 try modelContext.save()
@@ -57,12 +57,12 @@ struct LikedBikesView: View {
 }
 
 private struct LikeView: View {
-    var bike: LikedBike
+    var item: LikedItem
 
     var body: some View {
         HStack {
-            if !bike.pictures.isEmpty {
-                AsyncImage(url: URL(string: bike.pictures[0])) { phase in
+            if !item.pictures.isEmpty {
+                AsyncImage(url: URL(string: item.pictures[0])) { phase in
                     if let image = phase.image {
                         image
                             .resizable()
@@ -79,10 +79,10 @@ private struct LikeView: View {
             }
 
             VStack(alignment: .leading) {
-                Text(bike.name)
-                Text(bike.price)
+                Text(item.name)
+                Text(item.price)
                 HStack {
-                    Text(bike.type)
+                    Text(item.type)
                         .font(.system(size: 10))
                         .padding(4)
                         .borderedBgLight(color: .black)

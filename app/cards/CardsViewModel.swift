@@ -11,7 +11,7 @@ import SwiftUI
 
 @MainActor
 class CardsViewModel: ObservableObject {
-    @Published var cardModels: [Bike] = []
+    @Published var cardModels: [Item] = []
     
     var modelContext: ModelContext?
 
@@ -41,18 +41,18 @@ class CardsViewModel: ObservableObject {
     
     func fetchCardModels(afterTimestamp: UInt64) async {
         do {
-            let prefs = try Prefs.loadBikePrefs()
+            let prefs = try Prefs.loadItemPrefs()
             let apiFilters = toApiFilters(prefs)
-            let bikes = try await api.getBikes(afterTimestamp: afterTimestamp, filters: apiFilters)
+            let items = try await api.getItems(afterTimestamp: afterTimestamp, filters: apiFilters)
             let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp();
-            self.cardModels = filterBikes(bikes, prefs: prefs, lastSwipedTimestamp: lastSwipedTimestamp)
+            self.cardModels = filterItems(items, prefs: prefs, lastSwipedTimestamp: lastSwipedTimestamp)
         } catch {
             print("Failed to fetch cards with error: \(error)")
         }
     }
     
     // if preferences is nil this just adds all the types, meaning we accept everything
-    func toApiFilters(_ prefs: BikePreferences?) -> Filters {
+    func toApiFilters(_ prefs: ItemPreferences?) -> Filters {
         var types: [String] = []
         if prefs?.necklace ?? true {
             types.append("necklace")
@@ -84,76 +84,76 @@ class CardsViewModel: ObservableObject {
         return Filters(type_: types, price: prices)
     }
     
-    func filterBikes(_ bikes: [Bike], prefs: BikePreferences?, lastSwipedTimestamp: UInt64?) -> [Bike] {
+    func filterItems(_ items: [Item], prefs: ItemPreferences?, lastSwipedTimestamp: UInt64?) -> [Item] {
         let prefs = prefs ?? nonFilteredPrefs()
         let lastSwipedTimestamp = lastSwipedTimestamp ?? 0
-        return bikes.filter { bike in
+        return items.filter { item in
             // don't show already swiped (left or right) cards again
-            (bike.addedTimestamp > lastSwipedTimestamp) &&
-            // show only bikes that match preferences
-            matchBikeToPrefs(bike: bike, prefs: prefs)
+            (item.addedTimestamp > lastSwipedTimestamp) &&
+            // show only items that match preferences
+            matchItemToPrefs(item: item, prefs: prefs)
         }
     }
     
-    func matchBikeToPrefs(bike: Bike, prefs: BikePreferences) -> Bool {
-        // TODO use enum for bike type instead of strings
-        (prefs.necklace && bike.type == "necklace") ||
-        (prefs.bracelet && bike.type == "bracelet") ||
-        (prefs.ring && bike.type == "ring") ||
-        (prefs.earring && bike.type == "earring") ||
-        (prefs.price_1 && bike.priceNumber < 500) ||
-        (prefs.price_2 && bike.priceNumber >= 500 && bike.priceNumber < 1000) ||
-        (prefs.price_3 && bike.priceNumber >= 1000 && bike.priceNumber < 3000) ||
-        (prefs.price_4 && bike.priceNumber >= 3000)
+    func matchItemToPrefs(item: Item, prefs: ItemPreferences) -> Bool {
+        // TODO use enum for item type instead of strings
+        (prefs.necklace && item.type == "necklace") ||
+        (prefs.bracelet && item.type == "bracelet") ||
+        (prefs.ring && item.type == "ring") ||
+        (prefs.earring && item.type == "earring") ||
+        (prefs.price_1 && item.priceNumber < 500) ||
+        (prefs.price_2 && item.priceNumber >= 500 && item.priceNumber < 1000) ||
+        (prefs.price_3 && item.priceNumber >= 1000 && item.priceNumber < 3000) ||
+        (prefs.price_4 && item.priceNumber >= 3000)
     }
     
     // if the user hasn't stored any prefs yet, we don't filter, i.e. accept everything
-    func nonFilteredPrefs() -> BikePreferences {
-        return BikePreferences(necklace: true, bracelet: true, ring: true, earring: true,
+    func nonFilteredPrefs() -> ItemPreferences {
+        return ItemPreferences(necklace: true, bracelet: true, ring: true, earring: true,
                                price_1: true, price_2: true, price_3: true, price_4: true)
     }
     
     
-    func dislike(_ bike: Bike) {
-        dontShowAgain(bike)
+    func dislike(_ item: Item) {
+        dontShowAgain(item)
         do {
-            try saveTimestamp(bike)
+            try saveTimestamp(item)
         } catch {
             print("Error saving timestamp: \(error)")
         }
-        removeCard(bike)
+        removeCard(item)
     }
     
-    func like(_ bike: Bike) {
-        dontShowAgain(bike)
+    func like(_ item: Item) {
+        dontShowAgain(item)
         do {
-            try saveTimestamp(bike)
+            try saveTimestamp(item)
         } catch {
             // TODO error handling
             print("Error saving timestamp: \(error)")
         }
         do {
-            try saveLike(bike)
+            try saveLike(item)
         } catch {
             // TODO error handling
             print("Error saving like: \(error)")
         }
-        removeCard(bike)
+        removeCard(item)
 
     }
     
-    func saveTimestamp(_ bike: Bike) throws {
-        try Prefs.saveLastSwipedTimestamp(bike.addedTimestamp)
+    func saveTimestamp(_ item: Item) throws {
+        try Prefs.saveLastSwipedTimestamp(item.addedTimestamp)
     }
     
-    private func dontShowAgain(_ bike: Bike) {
+    private func dontShowAgain(_ item: Item) {
         // TODO
         // probably add to a json list of ids that's sent to the server each time
         // or if we don't want the server to do filtering (bad e.g. for caching) filter the response with this list in the client
     }
     
-    private func removeCard(_ bike: Bike) {
-        guard let index = cardModels.firstIndex(where: { $0.id == bike.id }) else { return }
+    private func removeCard(_ item: Item) {
+        guard let index = cardModels.firstIndex(where: { $0.id == item.id }) else { return }
         cardModels.remove(at: index)
         
         // if there are n cards left, fetch the next batch
@@ -169,7 +169,7 @@ class CardsViewModel: ObservableObject {
         }
     }
     
-    private func saveLike(_ bike: Bike) throws {
+    private func saveLike(_ item: Item) throws {
         guard let modelContext = modelContext else {
             print("Invalid state: model context not set")
             return
@@ -178,12 +178,12 @@ class CardsViewModel: ObservableObject {
         // don't insert again if it has same id
         // normally this shouldn't happen as already swiped cards shouldn't be presented again
         // but maybe we're not considering edge cases
-        let bikeId = bike.id  // Capture the value
-        let descriptor = FetchDescriptor<LikedBike>(
-            predicate: #Predicate { $0.id == bikeId }
+        let itemId = item.id  // Capture the value
+        let descriptor = FetchDescriptor<LikedItem>(
+            predicate: #Predicate { $0.id == itemId }
         )
-        let likedBikesForId = try modelContext.fetch(descriptor)
-        guard likedBikesForId.isEmpty else {
+        let likedItemsForId = try modelContext.fetch(descriptor)
+        guard likedItemsForId.isEmpty else {
             print("Invalid state: trying to add an already liked object (by id) to likes")
             return
         }
@@ -192,15 +192,15 @@ class CardsViewModel: ObservableObject {
 
         // for now we'll assume that there's no repetition,
         // an item with the same id as an already liked one would not be shown again and thus ux should not allow to like twice
-        let like = LikedBike(
-            id: bike.id,
-            name: bike.name,
-            price: bike.price,
-            pictures: bike.pictures,
+        let like = LikedItem(
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            pictures: item.pictures,
             likedDate: Date(),
-            vendorLink: bike.vendorLink,
-            type: bike.type,
-            descr: bike.descr,
+            vendorLink: item.vendorLink,
+            type: item.type,
+            descr: item.descr,
             order: currentCount
         )
         modelContext.insert(like)

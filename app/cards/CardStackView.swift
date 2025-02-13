@@ -8,7 +8,7 @@ struct CardStackView: View {
     var body: some View {
         ZStack {
             ForEach(viewModel.cardModels) { card in
-                CardView(viewModel: viewModel, bike: card)
+                CardView(viewModel: viewModel, item: card)
             }
         }
         .onAppear {

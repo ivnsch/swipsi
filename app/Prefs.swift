@@ -1,23 +1,23 @@
 import Foundation
 
 struct Prefs {
-    private static let bikePrefsKey = "bikePreferences"
+    private static let itemPrefsKey = "itemPreferences"
     private static let lastSwipedDate = "lastSwipedDate"
 
-    static func saveBikePrefs(_ prefs: BikePreferences) throws {
+    static func saveItemPrefs(_ prefs: ItemPreferences) throws {
         let store = NSUbiquitousKeyValueStore.default
 
         if let data = try? JSONEncoder().encode(prefs) {
-            store.set(data, forKey: bikePrefsKey)
+            store.set(data, forKey: itemPrefsKey)
             store.synchronize()
         }
     }
     
-    static func loadBikePrefs() throws -> BikePreferences? {
+    static func loadItemPrefs() throws -> ItemPreferences? {
         let store = NSUbiquitousKeyValueStore.default
 
-        if let data = store.data(forKey: bikePrefsKey),
-            let decodedObject = try? JSONDecoder().decode(BikePreferences.self, from: data) {
+        if let data = store.data(forKey: itemPrefsKey),
+            let decodedObject = try? JSONDecoder().decode(ItemPreferences.self, from: data) {
             return decodedObject
         } else {
             return nil

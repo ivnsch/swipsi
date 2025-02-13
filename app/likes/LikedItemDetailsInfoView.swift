@@ -1,33 +1,33 @@
 import SwiftUI
 
-struct LikedBikeDetailsInfoView: View {
-    let bike: BikeInfos
+struct LikedItemDetailsInfoView: View {
+    let item: ItemInfos
 
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(bike.name)
+                    Text(item.name)
                         .font(.title)
                         .fontWeight(.heavy)
                     
                     Spacer()
                 }
                 HStack {
-                    Text(bike.type)
+                    Text(item.type)
                         .padding(4)
                         .borderedBg(color: .black)
                 }
-                Text(bike.descr)
+                Text(item.descr)
                     .font(.subheadline)
             }
             .padding()
-            Text(bike.price)
+            Text(item.price)
         }
     }
 }
 
-struct BikeInfos {
+struct ItemInfos {
     var name: String
     var price: String
     var type: String
