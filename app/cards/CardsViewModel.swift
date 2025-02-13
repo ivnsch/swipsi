@@ -67,17 +67,6 @@ class CardsViewModel: ObservableObject {
             types.append("earring")
         }
        
-        var genders: [String] = []
-        if prefs?.genderWomen ?? true {
-            genders.append("women")
-        }
-        if prefs?.genderMen ?? true {
-            genders.append("men")
-        }
-        if prefs?.genderUni ?? true {
-            genders.append("uni")
-        }
-        
         var prices: [Int] = []
         if prefs?.price_1 ?? true {
             prices.append(1)
@@ -92,7 +81,7 @@ class CardsViewModel: ObservableObject {
             prices.append(4)
         }
 
-        return Filters(type_: types, gender: genders, price: prices)
+        return Filters(type_: types, price: prices)
     }
     
     func filterBikes(_ bikes: [Bike], prefs: BikePreferences?, lastSwipedTimestamp: UInt64?) -> [Bike] {
@@ -112,8 +101,6 @@ class CardsViewModel: ObservableObject {
         (prefs.bracelet && bike.type == "bracelet") ||
         (prefs.ring && bike.type == "ring") ||
         (prefs.earring && bike.type == "earring") ||
-        (prefs.genderWomen && bike.gender == "women") ||
-        (prefs.genderMen && bike.gender == "men") ||
         (prefs.price_1 && bike.priceNumber < 500) ||
         (prefs.price_2 && bike.priceNumber >= 500 && bike.priceNumber < 1000) ||
         (prefs.price_3 && bike.priceNumber >= 1000 && bike.priceNumber < 3000) ||
@@ -123,7 +110,6 @@ class CardsViewModel: ObservableObject {
     // if the user hasn't stored any prefs yet, we don't filter, i.e. accept everything
     func nonFilteredPrefs() -> BikePreferences {
         return BikePreferences(necklace: true, bracelet: true, ring: true, earring: true,
-                               genderWomen: true, genderMen: true, genderUni: true,
                                price_1: true, price_2: true, price_3: true, price_4: true)
     }
     

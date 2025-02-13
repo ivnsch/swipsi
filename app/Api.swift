@@ -8,14 +8,12 @@ struct Bike: Identifiable, Decodable, Hashable {
     var pictures: [String]
     var vendorLink: String
     var type: String
-    var gender: String
     var descr: String
     var addedTimestamp: UInt64
 }
 
 struct Filters: Codable {
     let type_: [String]
-    let gender: [String]
     let price: [Int]
 }
 

@@ -6,22 +6,16 @@ struct BikePreferences: Codable {
     var bracelet: Bool = false
     var ring: Bool = false
     var earring: Bool = false
-    var genderWomen: Bool = false
-    var genderMen: Bool = false
-    var genderUni: Bool = false
     var price_1: Bool = false
     var price_2: Bool = false
     var price_3: Bool = false
     var price_4: Bool = false
     
-    init(necklace: Bool, bracelet: Bool, ring: Bool, earring: Bool, genderWomen: Bool, genderMen: Bool, genderUni: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
+    init(necklace: Bool, bracelet: Bool, ring: Bool, earring: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
         self.necklace = necklace
         self.bracelet = bracelet
         self.ring = ring
         self.earring = earring
-        self.genderWomen = genderWomen
-        self.genderMen = genderMen
-        self.genderUni = genderUni
         self.earring = earring
         self.earring = earring
         self.price_1 = price_1
@@ -40,12 +34,11 @@ enum BikeType: Decodable, Hashable {
 }
 
 enum BikePreferenceStep {
-    case type, gender, priceRange, summary
+    case type, priceRange, summary
     
     var title: String {
         switch self {
             case .type: return "Type"
-            case .gender: return "Gender"
             case .priceRange: return "Price Range"
             case .summary: return "Summary"
         }
@@ -54,16 +47,14 @@ enum BikePreferenceStep {
     var previousStep: BikePreferenceStep? {
         switch self {
         case .type: return nil
-        case .gender: return .type
-        case .priceRange: return .gender
+        case .priceRange: return .type
         case .summary: return .priceRange
         }
     }
     
     var nextStep: BikePreferenceStep? {
         switch self {
-        case .type: return .gender
-        case .gender: return .priceRange
+        case .type: return .priceRange
         case .priceRange: return .summary
         case .summary: return nil
 
@@ -89,7 +80,6 @@ struct PreferencesOutlineView: View {
             } else {
                 BikePreferencesView(preferences: BikePreferences(
                     necklace: false, bracelet: false, ring: false, earring: false,
-                    genderWomen: false, genderMen: false, genderUni: false,
                     price_1: false, price_2: false, price_3: false, price_4: false
                 ), onSave: {
                     isEditing = false
@@ -147,8 +137,6 @@ struct BikePreferencesView: View {
                 switch currentStep {
                 case .type:
                     BikeTypeView(preferences: $preferences)
-                case .gender:
-                    ItemGenderView(preferences: $preferences)
                 case .priceRange:
                     BikePriceRangeView(preferences: $preferences)
                 case .summary:
@@ -186,9 +174,6 @@ struct BikePreferencesView: View {
     func validate(currentStep: BikePreferenceStep, preferences: BikePreferences) -> ValidationError? {
         switch currentStep {
         case .type: if !preferences.necklace && !preferences.bracelet && !preferences.ring  && !preferences.earring {
-            return .atLeastOneSelected
-        }
-        case .gender: if !preferences.genderWomen && !preferences.genderMen && !preferences.genderUni {
             return .atLeastOneSelected
         }
         case .priceRange: if !preferences.price_1 && !preferences.price_2 && !preferences.price_3 && !preferences.price_4 {
@@ -244,24 +229,6 @@ struct BikePreferencesSummaryView: View {
                 }
                 if preferences.earring {
                     Text("Hybrid")
-                        .summaryEntry()
-                }
-            }
-            
-            Text("Gender:")
-                .padding(.top, 10)
-            VStack(alignment: .leading) {
-                
-                if preferences.genderWomen {
-                    Text("Women")
-                        .summaryEntry()
-                }
-                if preferences.genderMen {
-                    Text("Men")
-                        .summaryEntry()
-                }
-                if preferences.genderUni {
-                    Text("Uni")
                         .summaryEntry()
                 }
             }
@@ -354,27 +321,6 @@ struct BikeTypeView: View {
                 preferences.earring = !preferences.earring
             }
             .preferenceButton(selected: preferences.earring)
-        }
-    }
-}
-
-struct ItemGenderView: View {
-    @Binding var preferences: BikePreferences
-
-    var body: some View {
-        VStack {
-            Button("Women") {
-                preferences.genderWomen = !preferences.genderWomen
-            }
-            .preferenceButton(selected: preferences.genderWomen)
-            Button("Men") {
-                preferences.genderMen = !preferences.genderMen
-            }
-            .preferenceButton(selected: preferences.genderMen)
-            Button("Uni") {
-                preferences.genderUni = !preferences.genderUni
-            }
-            .preferenceButton(selected: preferences.genderUni)
         }
     }
 }
