@@ -79,6 +79,8 @@ struct PreferencesOutlineView: View {
                 })
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.mainBg.ignoresSafeArea())
     }
     
     func preferences() -> BikePreferences? {
