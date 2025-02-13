@@ -22,6 +22,9 @@ struct LikedBikesView: View {
                 })
                 .onDelete(perform: deleteItems)
             }
+            .scrollContentBackground(.hidden)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Theme.mainBg.ignoresSafeArea())
             .navigationTitle("Favs")
         }
     }
