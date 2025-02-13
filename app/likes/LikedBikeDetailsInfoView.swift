@@ -4,23 +4,26 @@ struct LikedBikeDetailsInfoView: View {
     let bike: BikeInfos
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text(bike.name)
-                    .font(.title)
-                    .fontWeight(.heavy)
-                
-                Spacer()
+        HStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(bike.name)
+                        .font(.title)
+                        .fontWeight(.heavy)
+                    
+                    Spacer()
+                }
+                HStack {
+                    Text(bike.type)
+                        .padding(4)
+                        .borderedBg(color: .black)
+                }
+                Text(bike.descr)
+                    .font(.subheadline)
             }
-            HStack {
-                Text(bike.type)
-                    .padding(4)
-                    .borderedBg(color: .black)
-            }
-            Text(bike.descr)
-                .font(.subheadline)
+            .padding()
+            Text(bike.price)
         }
-        .padding()
     }
 }
 
