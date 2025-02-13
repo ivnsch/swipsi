@@ -41,13 +41,58 @@ class CardsViewModel: ObservableObject {
     
     func fetchCardModels(afterTimestamp: UInt64) async {
         do {
-            let bikes = try await api.getBikes(afterTimestamp: afterTimestamp)
             let prefs = try Prefs.loadBikePrefs()
+            let apiFilters = toApiFilters(prefs)
+            let bikes = try await api.getBikes(afterTimestamp: afterTimestamp, filters: apiFilters)
             let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp();
             self.cardModels = filterBikes(bikes, prefs: prefs, lastSwipedTimestamp: lastSwipedTimestamp)
         } catch {
             print("Failed to fetch cards with error: \(error)")
         }
+    }
+    
+    // if preferences is nil this just adds all the types, meaning we accept everything
+    func toApiFilters(_ prefs: BikePreferences?) -> Filters {
+        var types: [String] = []
+        if prefs?.necklace ?? true {
+            types.append("necklace")
+        }
+        if prefs?.bracelet ?? true {
+            types.append("bracelet")
+        }
+        if prefs?.ring ?? true {
+            types.append("ring")
+        }
+        if prefs?.earring ?? true {
+            types.append("earring")
+        }
+       
+        var genders: [String] = []
+        if prefs?.genderWomen ?? true {
+            genders.append("women")
+        }
+        if prefs?.genderMen ?? true {
+            genders.append("men")
+        }
+        if prefs?.genderUni ?? true {
+            genders.append("uni")
+        }
+        
+        var prices: [Int] = []
+        if prefs?.price_1 ?? true {
+            prices.append(1)
+        }
+        if prefs?.price_2 ?? true {
+            prices.append(2)
+        }
+        if prefs?.price_3 ?? true {
+            prices.append(3)
+        }
+        if prefs?.price_4 ?? true {
+            prices.append(4)
+        }
+
+        return Filters(type_: types, gender: genders, price: prices)
     }
     
     func filterBikes(_ bikes: [Bike], prefs: BikePreferences?, lastSwipedTimestamp: UInt64?) -> [Bike] {
