@@ -8,25 +8,22 @@ struct LikedBikesView: View {
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
-            NavigationSplitView {
-                List {
-                    ForEach(bikes) { bike in
-                        NavigationLink {
-                            LikedBikeDetailsView(bike: bike)
-                        } label: {
-                            LikeView(bike: bike)
-                        }
+        NavigationStack {
+            List {
+                ForEach(bikes) { bike in
+                    NavigationLink {
+                        LikedBikeDetailsView(bike: bike)
+                    } label: {
+                        LikeView(bike: bike)
                     }
-                    .onMove(perform: { indexSet, dest in
-                        moveItem(from: indexSet, to: dest)
-                    })
-                    .onDelete(perform: deleteItems)
                 }
-                .navigationTitle("Favs")
-            } detail: {
-                Text("Select a Landmark")
+                .onMove(perform: { indexSet, dest in
+                    moveItem(from: indexSet, to: dest)
+                })
+                .onDelete(perform: deleteItems)
             }
-            
+            .navigationTitle("Favs")
+        }
     }
     
     private func moveItem(from source: IndexSet, to destination: Int) {
