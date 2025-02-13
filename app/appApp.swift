@@ -25,6 +25,10 @@ struct appApp: App {
         }
     }()
 
+    init() {
+         UITabBar.appearance().unselectedItemTintColor = UIColor.gray
+     }
+
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -45,6 +49,7 @@ struct appApp: App {
                         Label("More", systemImage: "ellipsis")
                     }
             }
+            .accentColor(Theme.tabAccent)
         }
         .modelContainer(sharedModelContainer)
     }

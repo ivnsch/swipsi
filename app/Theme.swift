@@ -4,6 +4,7 @@ private let mint = "#98fbcb"
 
 struct Theme {
     static let mainBg = Color(hex: mint)
+    static let tabAccent = Color(hex: "#000000")
 }
 
 extension Color {
