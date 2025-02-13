@@ -31,6 +31,7 @@ class Api: ObservableObject {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            print("🔴 bad response:", response)
             throw URLError(.badServerResponse)
         }
 
@@ -38,7 +39,7 @@ class Api: ObservableObject {
             let decodedBikes = try JSONDecoder().decode([Bike].self, from: data)
             return decodedBikes
         } catch {
-            print("Error decoding:", error)
+            print("🔴 Error decoding:", error)
             throw error
         }
     }
