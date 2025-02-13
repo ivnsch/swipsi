@@ -2,18 +2,20 @@ import SwiftUI
 import SwiftData
 
 struct BikePreferences: Codable {
-    var mountain: Bool = false
-    var road: Bool = false
-    var hybrid: Bool = false
+    var necklace: Bool = false
+    var bracelet: Bool = false
+    var ring: Bool = false
+    var earring: Bool = false
     var price_1: Bool = false
     var price_2: Bool = false
     var price_3: Bool = false
     var price_4: Bool = false
     
-    init(mountain: Bool, road: Bool, hybrid: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
-        self.mountain = mountain
-        self.road = road
-        self.hybrid = hybrid
+    init(necklace: Bool, bracelet: Bool, ring: Bool, earring: Bool, price_1: Bool, price_2: Bool, price_3: Bool, price_4: Bool) {
+        self.necklace = necklace
+        self.bracelet = bracelet
+        self.ring = ring
+        self.earring = earring
         self.price_1 = price_1
         self.price_2 = price_2
         self.price_3 = price_3
@@ -74,7 +76,7 @@ struct PreferencesOutlineView: View {
                     })
                 }
             } else {
-                BikePreferencesView(preferences: BikePreferences(mountain: false, road: false, hybrid: false, price_1: false, price_2: false, price_3: false, price_4: false), onSave: {
+                BikePreferencesView(preferences: BikePreferences(necklace: false, bracelet: false, ring: false, earring: false, price_1: false, price_2: false, price_3: false, price_4: false), onSave: {
                     isEditing = false
                 })
             }
@@ -166,7 +168,7 @@ struct BikePreferencesView: View {
     
     func validate(currentStep: BikePreferenceStep, preferences: BikePreferences) -> ValidationError? {
         switch currentStep {
-        case .type: if !preferences.mountain && !preferences.road && !preferences.hybrid {
+        case .type: if !preferences.necklace && !preferences.bracelet && !preferences.ring  && !preferences.earring {
             return .atLeastOneSelected
         }
         case .priceRange: if !preferences.price_1 && !preferences.price_2 && !preferences.price_3 && !preferences.price_4 {
@@ -207,16 +209,21 @@ struct BikePreferencesSummaryView: View {
         VStack(alignment: .leading) {
             Text("Type:")
             VStack(alignment: .leading) {
-                if preferences.mountain {
+                
+                if preferences.necklace {
                     Text("Mountain")
                         .summaryEntry()
                 }
-                if preferences.road {
+                if preferences.bracelet {
                     Text("Road")
                         .summaryEntry()
 
                 }
-                if preferences.hybrid {
+                if preferences.ring {
+                    Text("Hybrid")
+                        .summaryEntry()
+                }
+                if preferences.earring {
                     Text("Hybrid")
                         .summaryEntry()
                 }
@@ -286,21 +293,31 @@ struct BorderedButton: View {
 struct BikeTypeView: View {
     @Binding var preferences: BikePreferences
 
+    
+    var necklace: Bool = false
+    var bracelet: Bool = false
+    var ring: Bool = false
+    var earring: Bool = false
+    var piercing: Bool = false
     var body: some View {
         VStack {
-            Button("Road")
+            Button("Necklace")
             {
-                preferences.road = !preferences.road
+                preferences.necklace = !preferences.necklace
             }
-            .preferenceButton(selected: preferences.road)
-            Button("Mountain") {
-                preferences.mountain = !preferences.mountain
+            .preferenceButton(selected: preferences.necklace)
+            Button("Bracelet") {
+                preferences.bracelet = !preferences.bracelet
             }
-            .preferenceButton(selected: preferences.mountain)
-            Button("Hybrid") {
-                preferences.hybrid = !preferences.hybrid
+            .preferenceButton(selected: preferences.bracelet)
+            Button("Ring") {
+                preferences.ring = !preferences.ring
             }
-            .preferenceButton(selected: preferences.hybrid)
+            .preferenceButton(selected: preferences.ring)
+            Button("earring") {
+                preferences.earring = !preferences.earring
+            }
+            .preferenceButton(selected: preferences.earring)
         }
     }
 }
