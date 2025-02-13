@@ -24,3 +24,9 @@ struct LikedBikeDetailsInfoView: View {
     }
 }
 
+struct BikeInfos {
+    var name: String
+    var price: String
+    var type: String
+    var descr: String
+}
