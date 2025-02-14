@@ -194,7 +194,7 @@ class CardsViewModel: ObservableObject {
             return
         }
         
-        let currentCount = cardModels.count
+        let currentCount = try currentLikedItemCount(modelContext: modelContext)
 
         // for now we'll assume that there's no repetition,
         // an item with the same id as an already liked one would not be shown again and thus ux should not allow to like twice
@@ -218,6 +218,12 @@ class CardsViewModel: ObservableObject {
             // TODO error handling
             print("error saving: \(error)")
         }
+    }
+    
+    func currentLikedItemCount(modelContext: ModelContext) throws -> Int {
+        let descriptor = FetchDescriptor<LikedItem>()
+        let items = try modelContext.fetch(descriptor)
+        return items.count
     }
     
     func isItemAlreadyLiked(modelContext: ModelContext, item: Item) throws -> Bool {
