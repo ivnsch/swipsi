@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct LikedItemsView: View {
-    @Query(sort: [SortDescriptor(\LikedItem.order, order: .forward)])
+    @Query(sort: [SortDescriptor(\LikedItem.order, order: .reverse)])
     private var items: [LikedItem]
     
     @Environment(\.modelContext) private var modelContext
