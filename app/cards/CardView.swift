@@ -82,11 +82,15 @@ private struct DetailsPopup: View {
         VStack {
             HStack {
                 Text(item.name)
-                Text(item.price)
+                Text(toFormattedPrice(item.price, currency: item.priceCurrency))
             }
         }
         link(item: item)
     }
+}
+
+func toFormattedPrice(_ price: String, currency: String) -> String {
+    return price + " " + currency
 }
 
 func link(item: Item) -> some View {

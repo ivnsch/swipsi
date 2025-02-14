@@ -196,6 +196,7 @@ class CardsViewModel: ObservableObject {
             id: item.id,
             name: item.name,
             price: item.price,
+            priceCurrency: item.priceCurrency,
             pictures: item.pictures,
             likedDate: Date(),
             vendorLink: item.vendorLink,

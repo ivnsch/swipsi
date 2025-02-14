@@ -5,6 +5,7 @@ struct Item: Identifiable, Decodable, Hashable {
     var name: String
     var price: String
     var priceNumber: Float
+    var priceCurrency: String
     var pictures: [String]
     var vendorLink: String
     var type: String

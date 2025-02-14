@@ -22,7 +22,7 @@ struct LikedItemDetailsInfoView: View {
                     .font(.subheadline)
             }
             .padding()
-            Text(item.price)
+            Text(toFormattedPrice(item.price, currency: item.priceCurrency))
         }
     }
 }
@@ -30,6 +30,7 @@ struct LikedItemDetailsInfoView: View {
 struct ItemInfos {
     var name: String
     var price: String
+    var priceCurrency: String
     var type: String
     var descr: String
 }
