@@ -16,12 +16,14 @@ struct LikedItemsView: View {
                     } label: {
                         LikeView(item: item)
                     }
+                    .listRowInsets(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8))
                 }
                 .onMove(perform: { indexSet, dest in
                     moveItem(from: indexSet, to: dest)
                 })
                 .onDelete(perform: deleteItems)
             }
+            .padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: -10))
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Theme.mainBg.ignoresSafeArea())
