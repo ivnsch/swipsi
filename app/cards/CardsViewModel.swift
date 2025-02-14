@@ -45,8 +45,7 @@ class CardsViewModel: ObservableObject {
             let prefs = try Prefs.loadItemPrefs()
             let apiFilters = toApiFilters(prefs)
             let items = try await api.getItems(afterTimestamp: afterTimestamp, filters: apiFilters)
-            let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp();
-            self.cardModels = filterItems(items, prefs: prefs, lastSwipedTimestamp: lastSwipedTimestamp)
+            self.cardModels = items
         } catch {
             print("Failed to fetch cards with error: \(error)")
         }
@@ -83,29 +82,6 @@ class CardsViewModel: ObservableObject {
         }
 
         return Filters(type_: types, price: prices)
-    }
-    
-    func filterItems(_ items: [Item], prefs: ItemPreferences?, lastSwipedTimestamp: UInt64?) -> [Item] {
-        let prefs = prefs ?? nonFilteredPrefs()
-        let lastSwipedTimestamp = lastSwipedTimestamp ?? 0
-        return items.filter { item in
-            // don't show already swiped (left or right) cards again
-            (item.addedTimestamp > lastSwipedTimestamp) &&
-            // show only items that match preferences
-            matchItemToPrefs(item: item, prefs: prefs)
-        }
-    }
-    
-    func matchItemToPrefs(item: Item, prefs: ItemPreferences) -> Bool {
-        // TODO use enum for item type instead of strings
-        (prefs.necklace && item.type == "necklace") ||
-        (prefs.bracelet && item.type == "bracelet") ||
-        (prefs.ring && item.type == "ring") ||
-        (prefs.earring && item.type == "earring") ||
-        (prefs.price_1 && item.priceNumber < 500) ||
-        (prefs.price_2 && item.priceNumber >= 500 && item.priceNumber < 1000) ||
-        (prefs.price_3 && item.priceNumber >= 1000 && item.priceNumber < 3000) ||
-        (prefs.price_4 && item.priceNumber >= 3000)
     }
     
     // if the user hasn't stored any prefs yet, we don't filter, i.e. accept everything
