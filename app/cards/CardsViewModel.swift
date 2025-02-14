@@ -187,19 +187,13 @@ class CardsViewModel: ObservableObject {
             return
         }
         
-        // don't insert again if it has same id
         // normally this shouldn't happen as already swiped cards shouldn't be presented again
         // but maybe we're not considering edge cases
-        let itemId = item.id  // Capture the value
-        let descriptor = FetchDescriptor<LikedItem>(
-            predicate: #Predicate { $0.id == itemId }
-        )
-        let likedItemsForId = try modelContext.fetch(descriptor)
-        guard likedItemsForId.isEmpty else {
-            print("Invalid state: trying to add an already liked object (by id) to likes")
+        guard try !isItemAlreadyLiked(modelContext: modelContext, item: item) else {
+            print("Invalid state: trying to add on already liked object (by id) to likes")
             return
         }
-
+        
         let currentCount = cardModels.count
 
         // for now we'll assume that there's no repetition,
@@ -224,5 +218,14 @@ class CardsViewModel: ObservableObject {
             // TODO error handling
             print("error saving: \(error)")
         }
+    }
+    
+    func isItemAlreadyLiked(modelContext: ModelContext, item: Item) throws -> Bool {
+        let itemId = item.id  // Capture the value
+        let descriptor = FetchDescriptor<LikedItem>(
+            predicate: #Predicate { $0.id == itemId }
+        )
+        let likedItemsForId = try modelContext.fetch(descriptor)
+        return !likedItemsForId.isEmpty
     }
 }
