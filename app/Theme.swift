@@ -6,6 +6,8 @@ struct Theme {
     static let mainBg = Color(hex: mint)
     static let tabAccent = Color(hex: "#000000")
     static let cardInfo = Color(hex: "#dddddd")
+    static let likeBg = Color(hex: "#1c1c1e")
+
 }
 
 extension Color {

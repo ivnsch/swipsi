@@ -97,7 +97,7 @@ private struct LikeView: View {
                         .borderedBgLight(color: .black)
                 }
             }
-            
         }
+        .background(Theme.likeBg.ignoresSafeArea())
     }
 }

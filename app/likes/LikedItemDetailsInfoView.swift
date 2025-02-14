@@ -4,7 +4,7 @@ struct LikedItemDetailsInfoView: View {
     let item: ItemInfos
 
     var body: some View {
-        HStack {
+        ScrollView {
             VStack(alignment: .leading) {
                 HStack {
                     Text(item.name)
@@ -25,6 +25,7 @@ struct LikedItemDetailsInfoView: View {
             }
             .padding()
         }
+
     }
 }
 

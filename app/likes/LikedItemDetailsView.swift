@@ -35,6 +35,8 @@ struct LikedItemDetailsView: View {
             .navigationTitle(item.name)
             link(item: item)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.likeBg.ignoresSafeArea())
     }
 }
 
