@@ -6,7 +6,8 @@ struct CardView: View {
     @State private var xOffset: CGFloat = 0
     @State private var degrees: Double = 0
     @State private var currentImageIndex = 0
-
+    @State private var showingDetails: Bool = false
+    
     let item: Item
     
     var body: some View {
@@ -32,6 +33,7 @@ struct CardView: View {
                     .overlay {
                         ImageScrollingOverlay(currentImageIndex: $currentImageIndex, imageCount: imageCount)
                     }
+                   
                 }
                 if item.pictures.count > 1 {
                     CardImageIndicatorView(currentImageIndex: currentImageIndex, imageCount: imageCount)
@@ -39,7 +41,22 @@ struct CardView: View {
                 SwipeActionIndicatorView(xOffset: $xOffset)
                 
             }
+            HStack {
+                Spacer()
+                Button {
+                    showingDetails = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+                .tint(Theme.cardInfo)
+                .frame(width: 60, height: 60)
+            }
         }
+        // doesn't work for some reason..
+//        .onTapGesture(perform: {
+//            print("tap!")
+//            showingDetails = true
+//        })
         .frame(width: SizeConstants.cardWidth, height: SizeConstants.cardHeight)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .offset(x: xOffset)
@@ -50,9 +67,36 @@ struct CardView: View {
                 .onChanged(onDragChanged)
                 .onEnded(onDragEnded)
         )
+        .sheet(isPresented: $showingDetails) {
+            DetailsPopup(item: item)
+                .presentationDetents([.large])
+        }
+ 
     }
-    
 }
+
+private struct DetailsPopup: View {
+    let item: Item
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Text(item.name)
+                Text(item.price)
+            }
+        }
+        link(item: item)
+    }
+}
+
+func link(item: Item) -> some View {
+    if let url = URL(string: item.vendorLink) {
+        return AnyView(Link("Go to vendor", destination: url))
+    } else {
+        return AnyView(Text("A problem occurred linking to vendor"))
+    }
+}
+
 
 private extension CardView {
     var imageCount: Int {
