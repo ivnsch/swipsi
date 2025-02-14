@@ -62,27 +62,31 @@ struct PreferencesOutlineView: View {
     @State private var isEditing: Bool = false
     
     var body: some View {
-        ZStack {
-            if let prefs = preferences() {
-                // if there are already preferences saved, show either init summary (same as summary but with "edit" button instead of "save")
-                // or preferences flow if we selected edit on said view
-                if isEditing {
-                    ItemPreferencesView(preferences: prefs, onSave: {
+        NavigationStack {
+            ZStack {
+                Theme.mainBg.ignoresSafeArea()
+                
+                if let prefs = preferences() {
+                    // if there are already preferences saved, show either init summary (same as summary but with "edit" button instead of "save")
+                    // or preferences flow if we selected edit on said view
+                    if isEditing {
+                        ItemPreferencesView(preferences: prefs, onSave: {
+                            onSavePreferences()
+                        })
+                    } else {
+                        InitSummaryView(preferences: prefs, onEdit: {
+                            isEditing = true
+                        })
+                    }
+                } else {
+                    // if there are no preferences yet, start flow with all false defaults
+                    ItemPreferencesView(preferences: ItemPreferences(
+                        necklace: false, bracelet: false, ring: false, earring: false,
+                        price_1: false, price_2: false, price_3: false, price_4: false
+                    ), onSave: {
                         onSavePreferences()
                     })
-                } else {
-                    InitSummaryView(preferences: prefs, onEdit: {
-                        isEditing = true
-                    })
                 }
-            } else {
-                // if there are no preferences yet, start flow with all false defaults
-                ItemPreferencesView(preferences: ItemPreferences(
-                    necklace: false, bracelet: false, ring: false, earring: false,
-                    price_1: false, price_2: false, price_3: false, price_4: false
-                ), onSave: {
-                    onSavePreferences()
-                })
             }
         }
         .onAppear() {
@@ -92,6 +96,12 @@ struct PreferencesOutlineView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.mainBg.ignoresSafeArea())
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+              Text("Filters")
+                    .foregroundColor(.black)
+            }
+        }
     }
     
     func onSavePreferences() {
@@ -120,6 +130,12 @@ struct InitSummaryView: View {
                 onEdit()
             }
             .opacity(0.5)
+        }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+              Text("Filters")
+                    .foregroundColor(.black)
+            }
         }
     }
 }
@@ -175,7 +191,12 @@ struct ItemPreferencesView: View {
                     }
                 }
             }
-            .navigationTitle(currentStep.title)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                  Text("Filters")
+                        .foregroundColor(.black)
+                }
+            }
         }
     }
     
@@ -263,6 +284,8 @@ struct ItemPreferencesSummaryView: View {
                 }
             }
         }
+        .foregroundColor(.black)
+
     }
 }
 
@@ -270,6 +293,7 @@ private extension Text {
     func summaryEntry() -> some View {
         font(.system(size: 30))
             .fontWeight(.medium)
+
     }
 }
 

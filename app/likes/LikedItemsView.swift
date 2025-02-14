@@ -25,7 +25,13 @@ struct LikedItemsView: View {
             .scrollContentBackground(.hidden)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Theme.mainBg.ignoresSafeArea())
-            .navigationTitle("Favs")
+            .toolbarColorScheme(.light, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                  Text("Favs")
+                        .foregroundColor(.black)
+                }
+            }
         }
     }
     

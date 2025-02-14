@@ -17,7 +17,12 @@ struct ContentView: View {
         NavigationSplitView {
             
             CardStackView()
-                .navigationTitle("Browse")
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                      Text("Browse")
+                            .foregroundColor(.black)
+                    }
+                }
 
 #if os(macOS)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
