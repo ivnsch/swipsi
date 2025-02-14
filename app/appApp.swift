@@ -44,7 +44,7 @@ struct appApp: App {
                     .tabItem {
                         Label("Filters", systemImage: "switch.2")
                     }
-                ContentView()
+                MoreView()
                     .tabItem {
                         Label("More", systemImage: "ellipsis")
                     }
