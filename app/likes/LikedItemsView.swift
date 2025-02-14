@@ -86,6 +86,7 @@ private struct LikeView: View {
 
             VStack(alignment: .leading) {
                 Text(item.name)
+                    .lineLimit(2)
                 Text(toFormattedPrice(item.price, currency: item.priceCurrency))
                 HStack {
                     Text(item.type)
