@@ -25,6 +25,7 @@ class CardsViewModel: ObservableObject {
         do {
             // we start after the last card that was swiped, or from beginning (0 timestamp) if user hasn't swiped yet
             let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp() ?? 0
+//            let lastSwipedTimestamp: UInt64 = 0 // debug
             startFetchCardModels(afterTimestamp: lastSwipedTimestamp)
         } catch {
             print("error retrieving lastSwipedTimestamp: \(error)")
