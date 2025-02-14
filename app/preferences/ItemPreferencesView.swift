@@ -306,22 +306,33 @@ struct ItemTypeView: View {
         VStack {
             Button("Necklace")
             {
+                setAllToFalse()
                 preferences.necklace = !preferences.necklace
             }
             .preferenceButton(selected: preferences.necklace)
             Button("Bracelet") {
+                setAllToFalse()
                 preferences.bracelet = !preferences.bracelet
             }
             .preferenceButton(selected: preferences.bracelet)
             Button("Ring") {
+                setAllToFalse()
                 preferences.ring = !preferences.ring
             }
             .preferenceButton(selected: preferences.ring)
             Button("Earring") {
+                setAllToFalse()
                 preferences.earring = !preferences.earring
             }
             .preferenceButton(selected: preferences.earring)
         }
+    }
+    
+    func setAllToFalse() {
+        preferences.necklace = false
+        preferences.bracelet = false
+        preferences.ring = false
+        preferences.earring = false
     }
 }
 
