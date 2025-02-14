@@ -17,12 +17,23 @@ class CardsViewModel: ObservableObject {
 
     private let api: Api
     
+    private var lastItemPrefs: ItemPreferences? = nil
+    
     init(api: Api) {
         self.api = api
     }
     
-    func startFetchCardModels() {
+    func tryFetchCardModels() {
         do {
+            // load new items either the first onAppear or when prefs were changed between onAppears
+            let prefs = try Prefs.loadItemPrefs()
+            if let lastItemPrefs = lastItemPrefs {
+                if lastItemPrefs == prefs {
+                    return;
+                }
+            }
+            lastItemPrefs = prefs
+            
             // we start after the last card that was swiped, or from beginning (0 timestamp) if user hasn't swiped yet
             let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp() ?? 0
 //            let lastSwipedTimestamp: UInt64 = 0 // debug

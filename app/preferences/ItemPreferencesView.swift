@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct ItemPreferences: Codable {
+struct ItemPreferences: Codable, Equatable {
     var necklace: Bool = false
     var bracelet: Bool = false
     var ring: Bool = false
