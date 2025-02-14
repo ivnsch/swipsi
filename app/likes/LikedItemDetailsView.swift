@@ -34,6 +34,7 @@ struct LikedItemDetailsView: View {
             LikedItemDetailsInfoView(item: ItemInfos(name: item.name, price: item.price, priceCurrency: item.priceCurrency, type: item.type, descr: item.descr))
             .navigationTitle(item.name)
             link(item: item)
+                .padding(.bottom, 50)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.likeBg.ignoresSafeArea())
@@ -42,7 +43,22 @@ struct LikedItemDetailsView: View {
 
 func link(item: LikedItem) -> some View {
     if let url = URL(string: item.vendorLink) {
-        return AnyView(Link("Go to vendor", destination: url))
+        return AnyView(
+            ZStack {
+                Link("Buy on Amazon", destination: url)
+                    .fontWeight(.heavy)
+                    .padding(10)
+                    .foregroundColor(.blue)
+                    .background(
+                        RoundedRectangle(
+                            cornerRadius: 10,
+                            style: .continuous
+                        )
+                        .stroke(.blue, lineWidth: 2)
+                        .frame(minWidth: 200, maxWidth: .infinity)
+                    )
+            }
+        )
     } else {
         return AnyView(Text("A problem occurred linking to vendor"))
     }
