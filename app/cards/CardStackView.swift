@@ -13,7 +13,7 @@ struct CardStackView: View {
         }
         .onAppear {
             viewModel.setModelContext(modelContext)
-            viewModel.tryFetchCardModels()
+            viewModel.tryFetchCardModelsInOnAppear()
         }
     }
 }

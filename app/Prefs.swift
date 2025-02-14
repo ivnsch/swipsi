@@ -30,6 +30,12 @@ struct Prefs {
         store.synchronize()
     }
     
+    static func clearLastSwipedTimestamp() throws {
+        let store = NSUbiquitousKeyValueStore.default
+        store.removeObject(forKey: lastSwipedDate)
+        store.synchronize()
+    }
+    
     static func loadLastSwipedTimestamp() throws -> UInt64? {
         let store = NSUbiquitousKeyValueStore.default
         if let number = store.object(forKey: lastSwipedDate) as? NSNumber {

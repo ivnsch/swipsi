@@ -23,24 +23,48 @@ class CardsViewModel: ObservableObject {
         self.api = api
     }
     
-    func tryFetchCardModels() {
+    func tryFetchCardModelsInOnAppear() {
         do {
-            // load new items either the first onAppear or when prefs were changed between onAppears
-            let prefs = try Prefs.loadItemPrefs()
-            if let lastItemPrefs = lastItemPrefs {
-                if lastItemPrefs == prefs {
-                    return;
-                }
+            if try checkPreferencesAndShouldLoadInOnAppear() {
+                try loadInOnAppear()
             }
-            lastItemPrefs = prefs
             
-            // we start after the last card that was swiped, or from beginning (0 timestamp) if user hasn't swiped yet
-            let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp() ?? 0
-//            let lastSwipedTimestamp: UInt64 = 0 // debug
-            startFetchCardModels(afterTimestamp: lastSwipedTimestamp)
         } catch {
             print("error retrieving lastSwipedTimestamp: \(error)")
         }
+    }
+    
+
+    // returns true if we should load items from api, false otherwise
+    func checkPreferencesAndShouldLoadInOnAppear() throws -> Bool {
+        // load new items either the first onAppear or when prefs were changed between onAppears
+        let prefs = try Prefs.loadItemPrefs()
+        if let lastItemPrefs = lastItemPrefs {
+            if lastItemPrefs == prefs {
+                // not first load (lastItemPrefs is not null) and no preferences change: no reason to load
+                return false;
+            } else {
+                // this is a bit clunky but ~acceptable for now,
+                // when changing preferences,
+                // the last swiped time becomes invalid against the new items
+                // (we've e.g. possibly not seen any items under a new category, a timestamp in the future would return no items)
+                // (remember that timestamps are just from where items were added to database, which is kind of arbitrary between different categories/price buckets etc)
+                // so we've to clear last swiped time in order to get all items for the new settings
+                // note that the user might have seen these items if they had enabled the same settings further in the past
+                // but that's a ux problem we're ok with for now
+                try Prefs.clearLastSwipedTimestamp()
+            }
+        }
+        
+        lastItemPrefs = prefs
+        return true
+    }
+    
+    func loadInOnAppear() throws {
+        // we start after the last card that was swiped, or from beginning (0 timestamp) if user hasn't swiped yet
+        let lastSwipedTimestamp = try Prefs.loadLastSwipedTimestamp() ?? 0
+//            let lastSwipedTimestamp: UInt64 = 0 // debug
+        startFetchCardModels(afterTimestamp: lastSwipedTimestamp)
     }
     
     func startFetchCardModels(afterTimestamp: UInt64) {
