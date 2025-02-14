@@ -93,7 +93,7 @@ class CardsViewModel: ObservableObject {
             types.append("necklace")
         }
         if prefs?.bracelet ?? true {
-            types.append("bracelet")
+            types.append("armband")
         }
         if prefs?.ring ?? true {
             types.append("ring")
