@@ -35,6 +35,11 @@ struct LikedItemsView: View {
                 }
             }
         }
+        .onAppear() {
+            for (item) in items {
+                print("item: \(item.price), order: \(item.order)")
+            }
+        }
     }
     
     private func moveItem(from source: IndexSet, to destination: Int) {
@@ -42,8 +47,11 @@ struct LikedItemsView: View {
         
         updatedItems.move(fromOffsets: source, toOffset: destination)
 
+        let itemsCount = updatedItems.count
         for (index, item) in updatedItems.enumerated() {
-            item.order = index
+            // items is reverted by order (descending query) so we need to
+            // set order such that it's descending too
+            item.order = itemsCount - index - 1
         }
 
         // we'll just ignore errors here as moving items can be seen as non critical..
