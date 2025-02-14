@@ -225,11 +225,11 @@ struct ItemPreferencesSummaryView: View {
                         .summaryEntry()
                 }
                 if preferences.ring {
-                    Text("Hybrid")
+                    Text("Ring")
                         .summaryEntry()
                 }
                 if preferences.earring {
-                    Text("Hybrid")
+                    Text("Earring")
                         .summaryEntry()
                 }
             }
