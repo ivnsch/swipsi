@@ -52,6 +52,10 @@ struct CardView: View {
                 .frame(width: 60, height: 60)
             }
         }
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Theme.mainBg, lineWidth: 3)
+        )
         // doesn't work for some reason..
 //        .onTapGesture(perform: {
 //            print("tap!")
