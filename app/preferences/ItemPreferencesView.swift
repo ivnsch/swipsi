@@ -64,9 +64,11 @@ struct PreferencesOutlineView: View {
     var body: some View {
         ZStack {
             if let prefs = preferences() {
+                // if there are already preferences saved, show either init summary (same as summary but with "edit" button instead of "save")
+                // or preferences flow if we selected edit on said view
                 if isEditing {
                     ItemPreferencesView(preferences: prefs, onSave: {
-                        isEditing = false
+                        onSavePreferences()
                     })
                 } else {
                     InitSummaryView(preferences: prefs, onEdit: {
@@ -74,11 +76,12 @@ struct PreferencesOutlineView: View {
                     })
                 }
             } else {
+                // if there are no preferences yet, start flow with all false defaults
                 ItemPreferencesView(preferences: ItemPreferences(
                     necklace: false, bracelet: false, ring: false, earring: false,
                     price_1: false, price_2: false, price_3: false, price_4: false
                 ), onSave: {
-                    isEditing = false
+                    onSavePreferences()
                 })
             }
         }
@@ -89,6 +92,10 @@ struct PreferencesOutlineView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.mainBg.ignoresSafeArea())
+    }
+    
+    func onSavePreferences() {
+        isEditing = false
     }
     
     func preferences() -> ItemPreferences? {
