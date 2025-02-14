@@ -32,7 +32,7 @@ struct LikedItemDetailsView: View {
             }
             .frame(width: UIScreen.main.bounds.width, height: SizeConstants.cardHeight)
             LikedItemDetailsInfoView(item: ItemInfos(name: item.name, price: item.price, priceCurrency: item.priceCurrency, type: item.type, descr: item.descr))
-            .navigationTitle(item.name)
+            .navigationTitle("Details")
             link(item: item)
         }
     }
