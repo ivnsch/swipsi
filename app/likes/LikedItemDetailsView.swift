@@ -47,20 +47,26 @@ func link(item: LikedItem) -> some View {
         return AnyView(
             ZStack {
                 Link("Buy on Amazon", destination: url)
-                    .fontWeight(.heavy)
-                    .padding(10)
-                    .foregroundColor(.blue)
-                    .background(
-                        RoundedRectangle(
-                            cornerRadius: 10,
-                            style: .continuous
-                        )
-                        .stroke(.blue, lineWidth: 2)
-                        .frame(minWidth: 200, maxWidth: .infinity)
-                    )
+                    .buyStyle()
             }
         )
     } else {
         return AnyView(Text("A problem occurred linking to vendor"))
+    }
+}
+
+extension Link {
+    func buyStyle() -> some View {
+        fontWeight(.heavy)
+        .padding(10)
+        .foregroundColor(.blue)
+        .background(
+            RoundedRectangle(
+                cornerRadius: 10,
+                style: .continuous
+            )
+            .stroke(.blue, lineWidth: 2)
+            .frame(minWidth: 200, maxWidth: .infinity)
+        )
     }
 }

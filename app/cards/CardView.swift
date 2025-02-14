@@ -80,11 +80,12 @@ private struct DetailsPopup: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Text(item.name)
-                Text(toFormattedPrice(item.price, currency: item.priceCurrency))
-            }
+            Text(item.name)
+                .padding(.bottom, 20)
+            Text(toFormattedPrice(item.price, currency: item.priceCurrency)).fontWeight(.medium)
+                .padding(.bottom, 20)
         }
+        .padding(.horizontal, 20)
         link(item: item)
     }
 }
@@ -95,7 +96,7 @@ func toFormattedPrice(_ price: String, currency: String) -> String {
 
 func link(item: Item) -> some View {
     if let url = URL(string: item.vendorLink) {
-        return AnyView(Link("Go to vendor", destination: url))
+        return AnyView(Link("Buy on Amazon", destination: url).buyStyle())
     } else {
         return AnyView(Text("A problem occurred linking to vendor"))
     }

@@ -8,7 +8,6 @@ struct LikedItemDetailsInfoView: View {
             VStack(alignment: .leading) {
                 HStack {
                     Text(item.name)
-                        .fontWeight(.heavy)
                     
                     Spacer()
                 }
@@ -18,7 +17,8 @@ struct LikedItemDetailsInfoView: View {
                         .borderedBg(color: .black)
                 }
                 Text(toFormattedPrice(item.price, currency: item.priceCurrency))
-                    .fontWeight(.heavy)
+                    .fontWeight(.medium)
+                    .padding(.top, 4)
 
                 Text(item.descr)
                     .font(.subheadline)
