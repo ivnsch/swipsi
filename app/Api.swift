@@ -20,7 +20,8 @@ struct Filters: Codable {
 
 class Api: ObservableObject {
     func getItems(afterTimestamp: UInt64, filters: Filters) async throws -> [Item] {
-        let url = URL(string: "http://192.168.178.24:3000/items/\(afterTimestamp)")!
+//        let url = URL(string: "http://127.0.0.1:8080/items/\(afterTimestamp)")!
+        let url = URL(string: "https://api.swipsi.com/items/\(afterTimestamp)")!
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
