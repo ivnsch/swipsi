@@ -12,7 +12,7 @@ struct AboutView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                Text("Swipsi is an app to browse products from third party stores in an original and fun way.\n\nDeveloper:\nIvan Schütz\nUST xxxxxxxx\nBirkenstrasse 15\n10559, Berlin\nGermany").padding(20)
+                Text("Swipsi is an app to browse products from third party stores in an original and fun way.\n\nDeveloper:\nIvan Schütz\nVAT 34522/00487\nBirkenstrasse 15\n10559, Berlin\nGermany").padding(20)
                     .foregroundColor(Color.black)
             }
             
