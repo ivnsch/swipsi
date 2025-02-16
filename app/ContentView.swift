@@ -36,5 +36,3 @@ struct ContentView: View {
         .background(Theme.mainBg.ignoresSafeArea())
     }
 }
-
-#imageLiteral(resourceName: "simulator_screenshot_76FC43AD-58CD-4896-B10D-C882F1083C4C.png")
