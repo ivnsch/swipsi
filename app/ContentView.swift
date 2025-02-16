@@ -14,31 +14,27 @@ struct ContentView: View {
     @EnvironmentObject var api: Api
 
     var body: some View {
-        NavigationSplitView {
-            
-            CardStackView()
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                      Text("Browse")
-                            .foregroundColor(.black)
-                    }
+        CardStackView()
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                  Text("Browse")
+                        .foregroundColor(.black)
                 }
+            }
 
 #if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
+        .navigationSplitViewColumnWidth(min: 180, ideal: 200)
 #endif
-            .toolbar {
+        .toolbar {
 #if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Theme.mainBg.ignoresSafeArea())
-        } detail: {
-            Text("Select an item")
+#endif
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Theme.mainBg.ignoresSafeArea())
     }
 }
 
+#imageLiteral(resourceName: "simulator_screenshot_76FC43AD-58CD-4896-B10D-C882F1083C4C.png")
